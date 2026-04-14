@@ -7,6 +7,9 @@
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 :root {
+  /* ═══ GROOMERS CAVE BRAND COLORS ═══ */
+  /* Premium Men's Grooming Aesthetic */
+  
   /* Color tokens */
   --color-base: #0A0A0A;
   --color-surface-primary: #111113;
@@ -14,19 +17,37 @@
   --color-text-primary: #FFFFFF;
   --color-text-secondary: #A1A1AA;
   --color-text-muted: #71717A;
-  --color-accent: #3B82F6;
-  --color-accent-hover: #2563EB;
+  
+  /* Primary Accent: Premium Gold */
+  --color-accent: #D4AF37;
+  --color-accent-hover: #B8941B;
+  --color-accent-dark: #9A7C1A;
+  
+  /* Secondary Accent: Deep Charcoal */
+  --color-secondary: #1A1A1A;
+  --color-secondary-light: #2A2A2A;
+  
+  /* Luxury Brand Colors */
+  --color-gold: #D4AF37;
+  --color-gold-light: #E8C547;
+  --color-charcoal: #1A1A1A;
+  --color-deep-black: #000000;
 
   /* Transitions */
   --transition-fast: 150ms ease-in-out;
   --transition-smooth: 200ms ease-in-out;
   --transition-fluid: 300ms ease-out;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.2);
-  --shadow-focus-glow: 0 0 0 3px rgba(59, 130, 246, 0.1), 0 0 0 4px rgba(59, 130, 246, 0.5);
+  /* Shadows - Premium & Luxurious */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 12px 20px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.6);
+  --shadow-focus-glow: 0 0 0 3px rgba(212, 175, 55, 0.1), 0 0 0 4px rgba(212, 175, 55, 0.5);
+  
+  /* Gold glow for premium elements */
+  --shadow-gold-glow: 0 0 20px rgba(212, 175, 55, 0.2);
+  --shadow-gold-glow-strong: 0 0 30px rgba(212, 175, 55, 0.4);
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */

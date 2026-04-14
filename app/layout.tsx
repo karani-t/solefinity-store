@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SoleFinity Store",
-  description: "A state-of-the-art smart shoe online system",
+  title: "Groomers Cave - Premium Men's Grooming & Luxury Fashion",
+  description: "Discover premium men's grooming products, designer perfumes, luxury streetwear, and lifestyle essentials at Groomers Cave. Your premium barbershop online.",
 };
 
 export default function RootLayout({

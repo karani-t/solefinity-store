@@ -11,7 +11,7 @@ export default function Nav() {
     <nav className="flex flex-wrap gap-4 items-center">
       <Link href="/" className="flex items-center gap-2 text-white font-bold hover:opacity-80 transition">
         <SoleFinityLogo size="small" />
-        <span className="hidden sm:inline">SoleFinity</span>
+        <span className="hidden sm:inline text-gold-400 font-bold">Groomers Cave</span>
       </Link>
       <Link href="/products" className="text-slate-200 hover:text-white font-semibold">Products</Link>
       <Link href="/cart" className="text-slate-200 hover:text-white font-semibold">Cart</Link>
