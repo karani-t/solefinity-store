@@ -102,27 +102,42 @@ export default function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <Link href={`/products/${product.id}`} className="block">
-      <div className="bg-slate-900/70 rounded-xl shadow-2xl overflow-hidden hover:shadow-[0_0_30px_rgba(131,71,255,0.35)] transition-all duration-300 transform hover:-translate-y-1 border border-slate-700">
-        <div className="relative h-48 bg-gradient-to-br from-slate-800 via-slate-900 to-black flex items-center justify-center overflow-hidden">
+    <Link href={`/products/${product.id}`} className="block group">
+      <div className="card-interactive h-full flex flex-col">
+        {/* Image Container */}
+        <div className="relative h-56 bg-base-800 rounded-lg overflow-hidden mb-lg flex items-center justify-center">
           {product.image && !imageError ? (
             <Image
               src={product.image}
               alt={product.name}
               width={300}
-              height={200}
+              height={224}
               unoptimized
-              className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
+              className="object-cover w-full h-full transition-smooth group-hover:scale-105"
               onError={() => setImageError(true)}
             />
           ) : (
-            <div className="flex flex-col items-center justify-center text-gray-400">
-              <svg className="w-12 h-12 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            <div className="flex flex-col items-center justify-center text-text-muted">
+              <svg className="w-12 h-12 mb-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
               </svg>
-              <span className="text-sm">No Image</span>
+              <span className="text-caption">No Image</span>
             </div>
           )}
+
+          {/* Stock Status Badges */}
+          <div className="absolute inset-0 pointer-events-none">
+            {product.stock === 0 && (
+              <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                <span className="font-semibold text-text-primary">Out of Stock</span>
+              </div>
+            )}
+            {product.stock <= 5 && product.stock > 0 && (
+              <div className="absolute top-md right-md">
+                <span className="badge badge-warning">Low Stock</span>
+              </div>
+            )}
+          </div>
 
           {/* Wishlist Button */}
           <button
@@ -132,61 +147,60 @@ export default function ProductCard({ product }: ProductCardProps) {
               handleWishlistToggle();
             }}
             disabled={wishlistLoading}
-            className={`absolute top-2 left-2 p-2 rounded-full transition-all duration-200 ${
+            className={`absolute top-md left-md pointer-events-auto p-md rounded-lg transition-smooth shadow-md ${
               isWishlisted
-                ? 'bg-red-500 text-white hover:bg-red-600'
-                : 'bg-white text-gray-400 hover:text-red-500 hover:bg-gray-50'
-            } shadow-md`}
+                ? 'bg-error text-white'
+                : 'bg-white/90 text-text-secondary hover:text-error'
+            }`}
             title={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
           >
             {wishlistLoading ? (
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
+              <div className="animate-spin rounded-full h-5 w-5 border-2 border-current border-t-transparent" />
             ) : (
               <svg className="w-5 h-5" fill={isWishlisted ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
             )}
           </button>
-
-          {product.stock <= 5 && product.stock > 0 && (
-            <div className="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded-full">
-              Low Stock
-            </div>
-          )}
-          {product.stock === 0 && (
-            <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-              <span className="text-white font-semibold">Out of Stock</span>
-            </div>
-          )}
         </div>
 
-        <div className="p-5">
-          <div className="mb-2">
-            {product.category && (
-              <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-medium">
+        {/* Content */}
+        <div className="flex flex-col flex-1">
+          {/* Category Badge */}
+          {product.category && (
+            <div className="mb-md">
+              <span className="badge badge-accent text-caption uppercase">
                 {product.category}
               </span>
-            )}
-          </div>
-
-          <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2">{product.name}</h3>
-
-          {product.description && (
-            <p className="text-gray-600 text-sm mb-3 line-clamp-2">{product.description}</p>
+            </div>
           )}
 
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-2xl font-bold text-gray-900">
+          {/* Title */}
+          <h3 className="text-h4 font-semibold text-text-primary mb-xs line-clamp-2">
+            {product.name}
+          </h3>
+
+          {/* Description */}
+          {product.description && (
+            <p className="text-body-sm text-text-secondary mb-lg line-clamp-2">
+              {product.description}
+            </p>
+          )}
+
+          {/* Price & Stock Info */}
+          <div className="flex-between mb-lg mt-auto">
+            <span className="text-h3 font-bold text-accent-500">
               KES {formatKES(product.priceKES ?? product.price ?? 0)}
             </span>
-            <span className={`text-sm font-medium ${
-              product.stock > 10 ? 'text-green-600' :
-              product.stock > 0 ? 'text-orange-600' : 'text-red-600'
+            <span className={`text-caption font-semibold ${
+              product.stock > 10 ? 'text-success' :
+              product.stock > 0 ? 'text-warning' : 'text-error'
             }`}>
-              {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
+              {product.stock > 0 ? `${product.stock} left` : 'Out of stock'}
             </span>
           </div>
 
+          {/* Add to Cart Button */}
           <button
             onClick={(e) => {
               e.preventDefault();
@@ -194,18 +208,16 @@ export default function ProductCard({ product }: ProductCardProps) {
               handleAddToCart();
             }}
             disabled={product.stock === 0 || isAdding}
-            className={`w-full py-3 px-4 rounded-lg font-semibold transition-all duration-200 ${
+            className={`btn btn-lg w-full ${
               product.stock === 0
-                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                : isAdding
-                ? 'bg-blue-500 text-white cursor-wait'
-                : 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-md active:scale-95'
+                ? 'opacity-50 cursor-not-allowed'
+                : 'btn-primary'
             }`}
           >
             {isAdding ? (
-              <div className="flex items-center justify-center">
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                Adding...
+              <div className="flex items-center justify-center gap-md">
+                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
+                <span>Adding...</span>
               </div>
             ) : product.stock === 0 ? (
               'Out of Stock'

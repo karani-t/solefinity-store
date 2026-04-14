@@ -60,84 +60,87 @@ export function Sidebar() {
 
   return (
     <>
-      {/* Toggle Button */}
+      {/* Toggle Button - Mobile */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-6 left-6 z-50 p-2 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg transition-all duration-200 md:hidden"
+        className="fixed top-lg left-lg z-50 p-md rounded-lg bg-accent-500 text-white hover:bg-accent-600 transition-smooth md:hidden shadow-md"
+        aria-label="Toggle menu"
       >
         {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
       </button>
 
-      {/* Sidebar Overlay (Mobile) */}
+      {/* Overlay - Mobile */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-30 md:hidden"
           onClick={closeSidebar}
+          aria-label="Close menu"
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed left-0 top-0 h-screen w-64 bg-gradient-to-b from-slate-950 to-slate-900 border-r border-slate-800 transform transition-transform duration-300 z-40 md:translate-x-0 ${
+        className={`fixed left-0 top-0 h-screen w-64 bg-surface-primary border-r border-base-800 transform transition-transform duration-fluid z-40 md:translate-x-0 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } md:static md:z-0 flex flex-col`}
       >
         {/* Header */}
-        <div className="p-6 border-b border-slate-800">
-          <div className="flex items-center gap-3">
+        <div className="p-lg border-b border-base-800">
+          <div className="flex items-center gap-md">
             <SoleFinityLogo size="small" />
             <div>
-              <div className="font-bold text-white">SoleFinity</div>
-              <div className="text-xs text-gray-400 capitalize">{session?.user.role}</div>
+              <div className="font-semibold text-text-primary">SoleFinity</div>
+              <div className="text-caption text-text-muted uppercase">{session?.user.role}</div>
             </div>
           </div>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto p-4">
-          <div className="space-y-2">
-            {navItems.map((item) => (
+        <nav className="flex-1 overflow-y-auto p-md space-y-xs">
+          {navItems.map((item) => {
+            const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+            return (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={closeSidebar}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
-                  pathname === item.href || pathname.startsWith(item.href + "/")
-                    ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
-                    : "text-gray-300 hover:bg-slate-800/50"
+                className={`flex items-center gap-md px-lg py-md rounded-lg transition-smooth ${
+                  isActive
+                    ? "bg-accent-500 text-white shadow-md"
+                    : "text-text-secondary hover:bg-base-800 hover:text-text-primary"
                 }`}
               >
                 {item.icon}
-                <span className="font-medium">{item.label}</span>
+                <span className="font-medium text-body">{item.label}</span>
                 {item.badge && (
-                  <span className="ml-auto text-xs bg-red-500 rounded-full px-2 py-1">
+                  <span className="ml-auto text-xs bg-error text-white rounded-full px-md py-xs font-semibold">
                     {item.badge}
                   </span>
                 )}
               </Link>
-            ))}
-          </div>
+            );
+          })}
         </nav>
 
         {/* Footer */}
-        <div className="p-4 border-t border-slate-800 space-y-2">
+        <div className="p-md border-t border-base-800 space-y-xs">
           <Link
             href="/dashboard/account"
             onClick={closeSidebar}
-            className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-slate-800/50 transition-all duration-200"
+            className="flex items-center gap-md px-lg py-md rounded-lg text-text-secondary hover:bg-base-800 hover:text-text-primary transition-smooth"
           >
             <User className="w-5 h-5" />
-            <span className="font-medium">Profile</span>
+            <span className="font-medium text-body">Profile</span>
           </Link>
           <button
             onClick={() => {
               closeSidebar();
               signOut({ callbackUrl: "/auth/signin" });
             }}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-400 hover:bg-red-950/30 transition-all duration-200"
+            className="w-full flex items-center gap-md px-lg py-md rounded-lg text-error hover:bg-red-950/20 transition-smooth text-body font-medium"
           >
             <LogOut className="w-5 h-5" />
-            <span className="font-medium">Sign Out</span>
+            <span>Sign Out</span>
           </button>
         </div>
       </aside>
@@ -147,10 +150,12 @@ export function Sidebar() {
 
 export function MainLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-950">
+    <div className="flex min-h-screen bg-base-950">
       <Sidebar />
-      <main className="flex-1 md:ml-0">
-        <div className="p-4 md:p-8">{children}</div>
+      <main className="flex-1 flex flex-col">
+        <div className="flex-1 p-lg md:p-xl overflow-y-auto">
+          {children}
+        </div>
       </main>
     </div>
   );
