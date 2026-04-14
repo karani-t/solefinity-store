@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { formatKES } from "@/app/lib/currency";
+import { DashboardHeader } from "@/app/components/DashboardHeader";
+import { QuickActionCard, OrderList, LoadingSpinner } from "@/app/components/DashboardComponents";
+import { ShoppingCart, Heart, User } from "lucide-react";
 
 interface Order {
   id: string;
@@ -61,75 +64,67 @@ export default function CustomerDashboard() {
   };
 
   if (status === "loading" || loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-900 to-black">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-400"></div>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-950 to-black text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-8">Welcome, {session?.user?.name}</h1>
+    <div className="space-y-xxxl">
+      {/* Header */}
+      <DashboardHeader
+        title={`Welcome, ${session?.user?.name || "Customer"}`}
+        description="Manage your orders, wishlist, and account settings"
+      />
 
-        {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Link href="/products" className="bg-gradient-to-br from-slate-900/70 to-purple-950/60 border border-purple-800/40 p-6 rounded-2xl shadow-2xl backdrop-blur-sm hover:border-purple-600 transition cursor-pointer">
-            <h3 className="text-xl font-bold text-pink-300 mb-2">🛍️ Shop</h3>
-            <p className="text-gray-300">Browse and buy products</p>
-          </Link>
-          <Link href="/wishlist" className="bg-gradient-to-br from-slate-900/70 to-purple-950/60 border border-purple-800/40 p-6 rounded-2xl shadow-2xl backdrop-blur-sm hover:border-purple-600 transition cursor-pointer">
-            <h3 className="text-xl font-bold text-cyan-300 mb-2">❤️ Wishlist</h3>
-            <p className="text-gray-300">{wishlistCount} items saved</p>
-          </Link>
-          <Link href="/dashboard/account" className="bg-gradient-to-br from-slate-900/70 to-purple-950/60 border border-purple-800/40 p-6 rounded-2xl shadow-2xl backdrop-blur-sm hover:border-purple-600 transition cursor-pointer">
-            <h3 className="text-xl font-bold text-lime-300 mb-2">👤 Account</h3>
-            <p className="text-gray-300">Manage profile & settings</p>
-          </Link>
-        </div>
-
-        {/* Recent Orders */}
-        <div className="bg-gradient-to-br from-slate-800/50 to-purple-900/30 border border-purple-700/40 rounded-2xl p-8 backdrop-blur-sm">
-          <h2 className="text-2xl font-bold mb-6">Your Orders</h2>
-          {orders.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-gray-300 mb-4">No orders yet</p>
-              <Link href="/products" className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg transition">
-                Start Shopping
-              </Link>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {orders.map((order) => (
-                <div key={order.id} className="bg-slate-700/40 border border-purple-600/20 p-4 rounded-lg">
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <p className="font-semibold">Order #{order.orderNumber || order.id.slice(-8)}</p>
-                      <p className="text-sm text-gray-300">{new Date(order.createdAt).toLocaleDateString()}</p>
-                    </div>
-                    <p className="font-bold text-lime-300">KES {formatKES(order.totalPriceKES || order.total || 0)}</p>
-                  </div>
-                  <div className="flex gap-3">
-                    <span className={`text-xs px-2 py-1 rounded-full ${
-                      order.status === "DELIVERED" ? "bg-green-500/20 text-green-300" :
-                      order.status === "SHIPPED" ? "bg-blue-500/20 text-blue-300" :
-                      "bg-yellow-500/20 text-yellow-300"
-                    }`}>
-                      {order.status}
-                    </span>
-                    <span className={`text-xs px-2 py-1 rounded-full ${
-                      order.paymentStatus === "PAID" ? "bg-green-500/20 text-green-300" : "bg-red-500/20 text-red-300"
-                    }`}>
-                      {order.paymentStatus}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+      {/* Quick Actions */}
+      <div>
+        <h2 className="text-h2 font-semibold text-text-primary mb-lg">Quick Actions</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-lg">
+          <QuickActionCard
+            title="Shop Now"
+            description="Browse and discover new products"
+            href="/products"
+            icon={<ShoppingCart className="w-8 h-8" />}
+            color="accent"
+          />
+          <QuickActionCard
+            title="Wishlist"
+            description={`${wishlistCount} items saved`}
+            href="/wishlist"
+            icon={<Heart className="w-8 h-8" />}
+            color="error"
+          />
+          <QuickActionCard
+            title="Account Settings"
+            description="Manage profile and preferences"
+            href="/dashboard/account"
+            icon={<User className="w-8 h-8" />}
+            color="success"
+          />
         </div>
       </div>
+
+      {/* Orders Section */}
+      <div>
+        <h2 className="text-h2 font-semibold text-text-primary mb-lg">Your Orders</h2>
+        <OrderList
+          orders={orders}
+          emptyMessage="No orders yet. Start shopping to place your first order!"
+          onOrderClick={(id) => router.push(`/orders/${id}`)}
+        />
+      </div>
+
+      {/* CTA Section */}
+      {orders.length === 0 && (
+        <div className="card-lg text-center py-xxxl">
+          <h3 className="text-h3 font-semibold text-text-primary mb-lg">Ready to explore?</h3>
+          <p className="text-body text-text-secondary mb-xl">
+            Discover our exclusive collection of premium streetwear
+          </p>
+          <Link href="/products" className="btn btn-primary">
+            Start Shopping
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

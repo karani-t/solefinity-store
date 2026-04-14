@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { User, Mail, Lock, Eye, EyeOff, ArrowRight, CheckCircle } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { SoleFinityLogo } from "@/app/components/Logo";
+import { AuthForm, FormField } from "@/app/components/AuthForm";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
@@ -119,155 +120,99 @@ export default function SignUp() {
             </p>
           </div>
 
-          {/* Main Card */}
-          <div className="backdrop-blur-xl bg-gradient-to-b from-slate-900/50 to-slate-950/50 border border-purple-900/30 rounded-2xl p-8 shadow-2xl">
-            <h2 className="text-2xl font-bold mb-2 tracking-tight">Create Account</h2>
-            <p className="text-gray-400 text-sm mb-8">Join SoleFinity and start shopping</p>
+          {/* Auth Form */}
+          <AuthForm
+            title="Create Account"
+            subtitle="Join SoleFinity and start shopping"
+            error={error}
+            isLoading={loading}
+            onSubmit={handleSubmit}
+            submitLabel="Join SoleFinity"
+            bottomLink={{
+              text: "Already have an account?",
+              label: "Sign In",
+              href: "/auth/signin",
+            }}
+          >
+            {/* Name Field */}
+            <FormField
+              label="Full Name"
+              name="name"
+              type="text"
+              value={formData.name}
+              onChange={handleInputChange}
+              placeholder="Your name"
+              disabled={loading}
+              required
+            />
 
-            {/* Error Message */}
-            {error && (
-              <div className="mb-6 p-4 bg-red-950/50 border border-red-900/50 rounded-lg flex items-start gap-3">
-                <div className="text-red-400 mt-0.5">⚠</div>
-                <p className="text-red-300 text-sm">{error}</p>
+            {/* Email Field */}
+            <FormField
+              label="Email"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              placeholder="your@email.com"
+              disabled={loading}
+              required
+            />
+
+            {/* Password Field */}
+            <div className="space-y-2">
+              <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wide">
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  placeholder="••••••••"
+                  disabled={loading}
+                  required
+                  className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-accent-500 focus:ring-1 focus:ring-accent-500 transition-all disabled:opacity-50"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
+                  disabled={loading}
+                >
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
               </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Name Field */}
-              <div>
-                <label htmlFor="name" className="block text-xs font-semibold text-gray-300 mb-2 uppercase tracking-wide">
-                  Full Name
-                </label>
-                <div className="relative">
-                  <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                  <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    placeholder="Your name"
-                    disabled={loading}
-                    className="w-full pl-12 pr-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 transition-all disabled:opacity-50"
-                  />
-                </div>
-              </div>
-
-              {/* Email Field */}
-              <div>
-                <label htmlFor="email" className="block text-xs font-semibold text-gray-300 mb-2 uppercase tracking-wide">
-                  Email
-                </label>
-                <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    placeholder="your@email.com"
-                    disabled={loading}
-                    className="w-full pl-12 pr-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 transition-all disabled:opacity-50"
-                  />
-                </div>
-              </div>
-
-              {/* Password Field */}
-              <div>
-                <label htmlFor="password" className="block text-xs font-semibold text-gray-300 mb-2 uppercase tracking-wide">
-                  Password
-                </label>
-                <div className="relative">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                  <input
-                    id="password"
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    required
-                    value={formData.password}
-                    onChange={handleInputChange}
-                    placeholder="••••••••"
-                    disabled={loading}
-                    className="w-full pl-12 pr-12 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 transition-all disabled:opacity-50"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
-                    disabled={loading}
-                  >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                  </button>
-                </div>
-                <p className="text-xs text-gray-500 mt-2">Min 8 chars, uppercase, lowercase, number</p>
-              </div>
-
-              {/* Confirm Password Field */}
-              <div>
-                <label htmlFor="confirmPassword" className="block text-xs font-semibold text-gray-300 mb-2 uppercase tracking-wide">
-                  Confirm Password
-                </label>
-                <div className="relative">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                  <input
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    type={showConfirmPassword ? "text" : "password"}
-                    required
-                    value={formData.confirmPassword}
-                    onChange={handleInputChange}
-                    placeholder="••••••••"
-                    disabled={loading}
-                    className="w-full pl-12 pr-12 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 transition-all disabled:opacity-50"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
-                    disabled={loading}
-                  >
-                    {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                  </button>
-                </div>
-              </div>
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full relative overflow-hidden group mt-8 py-3 px-4 rounded-lg font-bold text-lg transition-all duration-300"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-fuchsia-600 to-pink-600 group-hover:from-fuchsia-700 group-hover:to-pink-700 transition-all"></div>
-                <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity blur-xl"></div>
-                <div className="relative flex items-center justify-center gap-2">
-                  {loading ? (
-                    <>
-                      <span className="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                      Creating account...
-                    </>
-                  ) : (
-                    <>
-                      Join SoleFinity
-                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    </>
-                  )}
-                </div>
-              </button>
-            </form>
-
-            {/* Footer Links */}
-            <div className="mt-8 pt-6 border-t border-slate-800">
-              <p className="text-center text-gray-400 text-sm">
-                Already have an account?{" "}
-                <Link href="/auth/signin" className="text-fuchsia-400 hover:text-fuchsia-300 font-semibold transition-colors">
-                  Sign In
-                </Link>
-              </p>
+              <p className="text-xs text-gray-500">Min 8 chars, uppercase, lowercase, number</p>
             </div>
-          </div>
+
+            {/* Confirm Password Field */}
+            <div className="space-y-2">
+              <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wide">
+                Confirm Password
+              </label>
+              <div className="relative">
+                <input
+                  name="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  placeholder="••••••••"
+                  disabled={loading}
+                  required
+                  className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-accent-500 focus:ring-1 focus:ring-accent-500 transition-all disabled:opacity-50"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
+                  disabled={loading}
+                >
+                  {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
+              </div>
+            </div>
+          </AuthForm>
 
           {/* Security Notice */}
           <p className="text-center text-gray-500 text-xs mt-8">

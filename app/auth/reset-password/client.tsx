@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Lock, Eye, EyeOff, ArrowRight, CheckCircle, AlertCircle } from "lucide-react";
+import { Eye, EyeOff, CheckCircle, AlertCircle, ArrowRight } from "lucide-react";
+import { AuthForm } from "@/app/components/AuthForm";
 
 export default function ResetPasswordClient() {
   const router = useRouter();
@@ -112,7 +113,7 @@ export default function ResetPasswordClient() {
                 href="/auth/forgot-password"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-lg transition-all duration-300 relative overflow-hidden group"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-fuchsia-600 to-pink-600 group-hover:from-fuchsia-700 group-hover:to-pink-700 transition-all"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-accent-600 to-pink-600 group-hover:from-accent-700 group-hover:to-pink-700 transition-all"></div>
                 <div className="relative flex items-center gap-2">
                   Request New Link
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -183,106 +184,72 @@ export default function ResetPasswordClient() {
             </p>
           </div>
 
-          {/* Main Card */}
-          <div className="backdrop-blur-xl bg-gradient-to-b from-slate-900/50 to-slate-950/50 border border-purple-900/30 rounded-2xl p-8 shadow-2xl">
-            <h2 className="text-2xl font-bold mb-2 tracking-tight">Create New Password</h2>
-            <p className="text-gray-400 text-sm mb-8">Enter a strong new password for your account</p>
-
-            {error && (
-              <div className="mb-6 p-4 bg-red-950/50 border border-red-900/50 rounded-lg flex items-start gap-3">
-                <div className="text-red-400 mt-0.5">⚠</div>
-                <p className="text-red-300 text-sm">{error}</p>
+          {/* Auth Form */}
+          <AuthForm
+            title="Create New Password"
+            subtitle="Enter a strong new password for your account"
+            error={error}
+            isLoading={loading}
+            onSubmit={handleSubmit}
+            submitLabel="Reset Password"
+            bottomLink={{
+              text: "Remember your password?",
+              label: "Sign in",
+              href: "/auth/signin",
+            }}
+          >
+            {/* Password Field */}
+            <div className="space-y-2">
+              <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wide">
+                New Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                  disabled={loading}
+                  className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-accent-500 focus:ring-1 focus:ring-accent-500 transition-all disabled:opacity-50"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
+                  disabled={loading}
+                >
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
               </div>
-            )}
+            </div>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Password Field */}
-              <div>
-                <label htmlFor="password" className="block text-xs font-semibold text-gray-300 mb-2 uppercase tracking-wide">
-                  New Password
-                </label>
-                <div className="relative">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                  <input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    required
-                    disabled={loading}
-                    className="w-full pl-12 pr-12 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 transition-all disabled:opacity-50"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
-                    disabled={loading}
-                  >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                  </button>
-                </div>
+            {/* Confirm Password Field */}
+            <div className="space-y-2">
+              <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wide">
+                Confirm Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                  disabled={loading}
+                  className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-accent-500 focus:ring-1 focus:ring-accent-500 transition-all disabled:opacity-50"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
+                  disabled={loading}
+                >
+                  {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
               </div>
-
-              {/* Confirm Password Field */}
-              <div>
-                <label htmlFor="confirmPassword" className="block text-xs font-semibold text-gray-300 mb-2 uppercase tracking-wide">
-                  Confirm Password
-                </label>
-                <div className="relative">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                  <input
-                    id="confirmPassword"
-                    type={showConfirmPassword ? "text" : "password"}
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="••••••••"
-                    required
-                    disabled={loading}
-                    className="w-full pl-12 pr-12 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 transition-all disabled:opacity-50"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
-                    disabled={loading}
-                  >
-                    {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                  </button>
-                </div>
-              </div>
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full py-3 rounded-lg font-bold text-lg transition-all duration-300 relative overflow-hidden group disabled:opacity-50 mt-6"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-fuchsia-600 to-pink-600 group-hover:from-fuchsia-700 group-hover:to-pink-700 group-disabled:from-gray-600 group-disabled:to-gray-600 transition-all"></div>
-                <div className="relative flex items-center justify-center gap-2">
-                  {loading ? (
-                    <>
-                      <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-current"></div>
-                      Resetting...
-                    </>
-                  ) : (
-                    <>
-                      Reset Password
-                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    </>
-                  )}
-                </div>
-              </button>
-            </form>
-
-            {/* Footer Link */}
-            <p className="text-center text-sm text-gray-400 mt-6">
-              Remember your password?{" "}
-              <Link href="/auth/signin" className="text-fuchsia-400 hover:text-fuchsia-300 font-semibold transition-colors">
-                Sign in
-              </Link>
-            </p>
-          </div>
+            </div>
+          </AuthForm>
         </div>
       </div>
     </div>

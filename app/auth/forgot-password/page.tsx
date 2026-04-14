@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Mail, ArrowLeft, CheckCircle, ArrowRight } from "lucide-react";
+import { CheckCircle, ArrowLeft } from "lucide-react";
+import { AuthForm, FormField } from "@/app/components/AuthForm";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -72,15 +73,15 @@ export default function ForgotPassword() {
               <p className="text-gray-300 mb-2">
                 We've sent a password reset link to:
               </p>
-              <p className="text-fuchsia-300 font-semibold mb-6 break-all">{email}</p>
+              <p className="text-accent-300 font-semibold mb-6 break-all">{email}</p>
               <p className="text-sm text-gray-400 mb-8">
-                The link will expire in <span className="text-fuchsia-300 font-semibold">1 hour</span>. If you don't see the email, check your spam folder.
+                The link will expire in <span className="text-accent-300 font-semibold">1 hour</span>. If you don't see the email, check your spam folder.
               </p>
               <Link
                 href="/auth/signin"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-lg transition-all duration-300 relative overflow-hidden group"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-fuchsia-600 to-pink-600 group-hover:from-fuchsia-700 group-hover:to-pink-700 transition-all"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-accent-600 to-pink-600 group-hover:from-accent-700 group-hover:to-pink-700 transition-all"></div>
                 <div className="relative flex items-center gap-2">
                   <ArrowLeft className="w-5 h-5" />
                   Back to Sign In
@@ -89,72 +90,30 @@ export default function ForgotPassword() {
             </div>
           ) : (
             // Form State
-            <div className="backdrop-blur-xl bg-gradient-to-b from-slate-900/50 to-slate-950/50 border border-purple-900/30 rounded-2xl p-8 shadow-2xl">
-              <h2 className="text-2xl font-bold mb-2 tracking-tight">Reset Password</h2>
-              <p className="text-gray-400 text-sm mb-8">
-                Enter your email and we'll send you a link to create a new password.
-              </p>
-
-              {error && (
-                <div className="mb-6 p-4 bg-red-950/50 border border-red-900/50 rounded-lg flex items-start gap-3">
-                  <div className="text-red-400 mt-0.5">⚠</div>
-                  <p className="text-red-300 text-sm">{error}</p>
-                </div>
-              )}
-
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label htmlFor="email" className="block text-xs font-semibold text-gray-300 mb-2 uppercase tracking-wide">
-                    Email Address
-                  </label>
-                  <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                    <input
-                      id="email"
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="your@email.com"
-                      required
-                      disabled={loading}
-                      className="w-full pl-12 pr-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 transition-all disabled:opacity-50"
-                    />
-                  </div>
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={loading || !email}
-                  className="w-full relative overflow-hidden group mt-8 py-3 px-4 rounded-lg font-bold text-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-fuchsia-600 to-pink-600 group-hover:from-fuchsia-700 group-hover:to-pink-700 transition-all disabled:from-fuchsia-700 disabled:to-pink-700"></div>
-                  <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity blur-xl disabled:opacity-0"></div>
-                  <div className="relative flex items-center justify-center gap-2">
-                    {loading ? (
-                      <>
-                        <span className="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                        Sending...
-                      </>
-                    ) : (
-                      <>
-                        Send Reset Link
-                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                      </>
-                    )}
-                  </div>
-                </button>
-              </form>
-
-              {/* Footer Links */}
-              <div className="mt-8 pt-6 border-t border-slate-800">
-                <p className="text-center text-gray-400 text-sm">
-                  Remember your password?{" "}
-                  <Link href="/auth/signin" className="text-fuchsia-400 hover:text-fuchsia-300 font-semibold transition-colors">
-                    Sign In
-                  </Link>
-                </p>
-              </div>
-            </div>
+            <AuthForm
+              title="Reset Password"
+              subtitle="Enter your email and we'll send you a link to create a new password."
+              error={error}
+              isLoading={loading}
+              onSubmit={handleSubmit}
+              submitLabel="Send Reset Link"
+              bottomLink={{
+                text: "Remember your password?",
+                label: "Sign In",
+                href: "/auth/signin",
+              }}
+            >
+              <FormField
+                label="Email Address"
+                name="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="your@email.com"
+                disabled={loading}
+                required
+              />
+            </AuthForm>
           )}
 
           {/* Security Notice */}
