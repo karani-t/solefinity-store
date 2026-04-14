@@ -5,6 +5,8 @@ import { formatKES } from "@/app/lib/currency";
 import { ChevronDown, BarChart3 } from "lucide-react";
 import Link from "next/link";
 import { Sidebar } from "@/app/components/Sidebar";
+import { DashboardHeader, StatCard } from "@/app/components/DashboardHeader";
+import { OrderList } from "@/app/components/DashboardComponents";
 
 interface Order {
   id: string;
@@ -123,214 +125,227 @@ export default function StaffDashboardClient() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-950 to-black flex items-center justify-center text-white">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-fuchsia-400"></div>
+      <div className="flex min-h-screen bg-gradient-to-b from-base-950 via-base-900 to-base-950">
+        <Sidebar />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-2 border-accent-400 border-t-transparent"></div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-b from-slate-900 via-purple-950 to-black text-white">
+    <div className="flex min-h-screen bg-gradient-to-b from-base-950 via-base-900 to-base-950 text-text-primary">
       {/* Sidebar */}
       <Sidebar />
 
       {/* Main Content */}
       <div className="flex-1">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-7xl mx-auto px-lg sm:px-xxxl lg:px-max py-xxxl">
           {/* Toast Notification */}
-        {toast && (
-          <div
-            className={`fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg transition-opacity duration-3000 ${
-              toast.type === "success"
-                ? "bg-green-500 text-white"
-                : "bg-red-500 text-white"
-            }`}
-          >
-            {toast.message}
-          </div>
-        )}
-
-        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-8 flex items-center justify-between">
-          <span>Staff Dashboard</span>
-          <Link href="/dashboard/staff/reports" className="ml-4 px-4 py-2 bg-gradient-to-r from-fuchsia-500 to-purple-500 hover:from-fuchsia-600 hover:to-purple-600 rounded-lg font-semibold flex items-center gap-2 transition-all">
-            <BarChart3 className="w-5 h-5" />
-            <span className="text-sm">Reports</span>
-          </Link>
-        </h1>
-
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-gradient-to-br from-slate-900/70 to-purple-950/60 border border-purple-800/40 p-6 rounded-2xl shadow-2xl backdrop-blur-sm">
-            <p className="text-pink-200 uppercase text-xs tracking-widest">Total Sales</p>
-            <p className="text-3xl font-bold text-lime-300 mt-2">KES {formatKES(stats.totalSales)}</p>
-          </div>
-          <div className="bg-gradient-to-br from-slate-900/70 to-purple-950/60 border border-purple-800/40 p-6 rounded-2xl shadow-2xl backdrop-blur-sm">
-            <p className="text-pink-200 uppercase text-xs tracking-widest">Orders Processed</p>
-            <p className="text-3xl font-bold text-cyan-300 mt-2">{stats.ordersProcessed}</p>
-          </div>
-          <div className="bg-gradient-to-br from-slate-900/70 to-purple-950/60 border border-purple-800/40 p-6 rounded-2xl shadow-2xl backdrop-blur-sm">
-            <p className="text-pink-200 uppercase text-xs tracking-widest">Pending Payments</p>
-            <p className="text-3xl font-bold text-rose-300 mt-2">{stats.pendingPayments}</p>
-          </div>
-        </div>
-
-        {/* Filter Buttons */}
-        <div className="flex gap-2 mb-8 flex-wrap">
-          {(["ALL", "PENDING", "PROCESSING", "PAID_AWAITING"] as const).map((f) => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`px-4 py-2 rounded-full font-semibold transition-all ${
-                filter === f
-                  ? "bg-fuchsia-500 text-white shadow-lg"
-                  : "bg-slate-700 text-gray-300 hover:bg-slate-600"
+          {toast && (
+            <div
+              className={`fixed top-lg right-lg px-lg py-md rounded-lg shadow-lg transition-opacity duration-3000 ${
+                toast.type === "success"
+                  ? "bg-success/20 border border-success text-success"
+                  : "bg-error/20 border border-error text-error"
               }`}
             >
-              {f === "PAID_AWAITING" ? "To Ship" : f}
-            </button>
-          ))}
-        </div>
-
-        {/* Orders */}
-        <div className="space-y-4">
-          {filteredOrders.length === 0 ? (
-            <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-8 text-center">
-              <p className="text-gray-400">No orders found</p>
+              {toast.message}
             </div>
-          ) : (
-            filteredOrders.map((order) => (
-              <div
-                key={order.id}
-                className="bg-slate-800/50 border border-slate-700/50 rounded-lg overflow-hidden transition-all"
-              >
-                <button
-                  onClick={() =>
-                    setExpandedOrder(
-                      expandedOrder === order.id ? null : order.id
-                    )
-                  }
-                  className="w-full px-6 py-4 flex items-center justify-between hover:bg-slate-700/30 transition-colors"
-                >
-                  <div className="flex-1 text-left">
-                    <div className="flex items-center gap-3">
-                      <h3 className="font-bold text-lg">
-                        Order #{order.orderNumber || order.id.slice(-8)}
-                      </h3>
-                      <span
-                        className={`text-xs px-2 py-1 rounded-full font-semibold ${
-                          order.status === "DELIVERED"
-                            ? "bg-green-900/40 text-green-300"
-                            : order.status === "SHIPPED"
-                            ? "bg-blue-900/40 text-blue-300"
-                            : order.status === "PROCESSING"
-                            ? "bg-yellow-900/40 text-yellow-300"
-                            : "bg-red-900/40 text-red-300"
-                        }`}
-                      >
-                        {order.status}
-                      </span>
-                      <span
-                        className={`text-xs px-2 py-1 rounded-full font-semibold ${
-                          order.paymentStatus === "PAID"
-                            ? "bg-green-900/40 text-green-300"
-                            : "bg-amber-900/40 text-amber-300"
-                        }`}
-                      >
-                        {order.paymentStatus}
-                      </span>
-                    </div>
-                    <p className="text-sm text-gray-400 mt-1">
-                      {order.user.name} • {new Date(order.createdAt).toLocaleDateString()} •{" "}
-                      <span className="text-fuchsia-300 font-semibold">
-                        KES {formatKES(order.totalPriceKES || order.total || 0)}
-                      </span>
-                    </p>
-                  </div>
-                  <ChevronDown
-                    className={`transition-transform ${
-                      expandedOrder === order.id ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-
-                {/* Expanded Details */}
-                {expandedOrder === order.id && (
-                  <div className="border-t border-slate-700/50 px-6 py-4 bg-slate-900/20">
-                    {/* Order Items */}
-                    <div className="mb-4">
-                      <h4 className="font-semibold text-sm mb-3 text-gray-300">
-                        Items ({order.items.length})
-                      </h4>
-                      <div className="space-y-2">
-                        {order.items.map((item) => (
-                          <div
-                            key={item.id}
-                            className="flex justify-between text-sm bg-slate-800/50 p-2 rounded"
-                          >
-                            <span>
-                              {item.product.name} x{item.quantity}
-                            </span>
-                            <span className="text-fuchsia-300">
-                              KES{" "}
-                              {formatKES(
-                                ((item.priceKES || item.price) as number) *
-                                  item.quantity || 0
-                              )}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Status Update Controls */}
-                    <div className="mb-4">
-                      <h4 className="font-semibold text-sm mb-3 text-gray-300">
-                        Update Status
-                      </h4>
-                      <div className="flex gap-2 flex-wrap">
-                        {ORDER_STATUSES.map((status) => (
-                          <button
-                            key={status}
-                            onClick={() => updateOrderStatus(order.id, status)}
-                            disabled={
-                              ORDER_STATUSES.indexOf(status) <
-                                ORDER_STATUSES.indexOf(order.status) ||
-                              updateLoading[order.id]
-                            }
-                            className={`text-sm px-3 py-1 rounded-full font-semibold transition-all ${
-                              status === order.status
-                                ? "bg-fuchsia-500/30 text-fuchsia-300 border border-fuchsia-500"
-                                : updateLoading[order.id] ||
-                                  ORDER_STATUSES.indexOf(status) <
-                                    ORDER_STATUSES.indexOf(order.status)
-                                ? "bg-slate-700 text-gray-500 cursor-not-allowed"
-                                : "bg-slate-700 text-gray-300 hover:bg-slate-600"
-                            }`}
-                          >
-                            {updateLoading[order.id] && status === order.status
-                              ? "..."
-                              : status}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Payment Controls */}
-                    {order.paymentStatus === "PENDING" && (
-                      <button
-                        onClick={() => confirmPayment(order.id)}
-                        disabled={updateLoading[order.id]}
-                        className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-600 text-white px-4 py-2 rounded font-semibold transition-all"
-                      >
-                        {updateLoading[order.id] ? "Processing..." : "Confirm Payment"}
-                      </button>
-                    )}
-                  </div>
-                )}
-              </div>
-            ))
           )}
-        </div>
+
+          {/* Header with Reports Button */}
+          <div className="flex-between mb-xxxl">
+            <div>
+              <h1 className="text-h1 font-bold">Staff Dashboard</h1>
+              <p className="text-text-secondary text-body mt-md">Manage orders and process payments</p>
+            </div>
+            <Link 
+              href="/dashboard/staff/reports" 
+              className="btn btn-secondary flex-center gap-md"
+            >
+              <BarChart3 className="w-5 h-5" />
+              <span>Reports</span>
+            </Link>
+          </div>
+
+          {/* Stats Cards */}
+          <div className="grid-cols-responsive mb-xxxl">
+            <StatCard 
+              label="Total Sales"
+              value={`KES ${formatKES(stats.totalSales)}`}
+              color="accent"
+            />
+            <StatCard 
+              label="Orders Processed"
+              value={stats.ordersProcessed.toString()}
+              color="success"
+            />
+            <StatCard 
+              label="Pending Payments"
+              value={stats.pendingPayments.toString()}
+              color="warning"
+            />
+          </div>
+
+          {/* Filter Buttons */}
+          <div className="flex gap-md mb-xxxl flex-wrap">
+            {(["ALL", "PENDING", "PROCESSING", "PAID_AWAITING"] as const).map((f) => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={`${
+                  filter === f
+                    ? "btn btn-primary"
+                    : "btn btn-ghost hover:bg-base-800"
+                }`}
+              >
+                {f === "PAID_AWAITING" ? "To Ship" : f}
+              </button>
+            ))}
+          </div>
+
+          {/* Orders Table */}
+          <div className="space-y-md">
+            {filteredOrders.length === 0 ? (
+              <div className="card-lg text-center py-xxxl">
+                <p className="text-text-muted">No orders found</p>
+              </div>
+            ) : (
+              filteredOrders.map((order) => (
+                <div
+                  key={order.id}
+                  className="card-lg overflow-hidden transition-all hover:border-accent-500/30"
+                >
+                  <button
+                    onClick={() =>
+                      setExpandedOrder(
+                        expandedOrder === order.id ? null : order.id
+                      )
+                    }
+                    className="w-full px-lg py-md flex-between hover:bg-base-800/50 transition-colors"
+                  >
+                    <div className="flex-1 text-left">
+                      <div className="flex-center gap-md mb-md">
+                        <h3 className="font-bold text-lg">
+                          Order #{order.orderNumber || order.id.slice(-8)}
+                        </h3>
+                        <span
+                          className={`text-xs px-md py-xs rounded-full font-semibold ${
+                            order.status === "DELIVERED"
+                              ? "badge badge-success"
+                              : order.status === "SHIPPED"
+                              ? "badge badge-accent"
+                              : order.status === "PROCESSING"
+                              ? "badge badge-warning"
+                              : "badge badge-error"
+                          }`}
+                        >
+                          {order.status}
+                        </span>
+                        <span
+                          className={`text-xs px-md py-xs rounded-full font-semibold ${
+                            order.paymentStatus === "PAID"
+                              ? "badge badge-success"
+                              : "badge badge-warning"
+                          }`}
+                        >
+                          {order.paymentStatus}
+                        </span>
+                      </div>
+                      <p className="text-sm text-text-secondary">
+                        {order.user.name} • {new Date(order.createdAt).toLocaleDateString()} •{" "}
+                        <span className="text-accent-400 font-semibold">
+                          KES {formatKES(order.totalPriceKES || order.total || 0)}
+                        </span>
+                      </p>
+                    </div>
+                    <ChevronDown
+                      className={`transition-transform w-5 h-5 ${
+                        expandedOrder === order.id ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+
+                  {/* Expanded Details */}
+                  {expandedOrder === order.id && (
+                    <div className="border-t border-base-700/50 px-lg py-md bg-base-900/50">
+                      {/* Order Items */}
+                      <div className="mb-lg">
+                        <h4 className="font-semibold text-sm mb-md text-text-secondary">
+                          Items ({order.items.length})
+                        </h4>
+                        <div className="space-y-sm">
+                          {order.items.map((item) => (
+                            <div
+                              key={item.id}
+                              className="flex-between text-sm bg-base-800/50 p-md rounded-lg"
+                            >
+                              <span>
+                                {item.product.name} x{item.quantity}
+                              </span>
+                              <span className="text-accent-400 font-semibold">
+                                KES{" "}
+                                {formatKES(
+                                  ((item.priceKES || item.price) as number) *
+                                    item.quantity || 0
+                                )}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Status Update Controls */}
+                      <div className="mb-lg">
+                        <h4 className="font-semibold text-sm mb-md text-text-secondary">
+                          Update Status
+                        </h4>
+                        <div className="flex gap-md flex-wrap">
+                          {ORDER_STATUSES.map((status) => (
+                            <button
+                              key={status}
+                              onClick={() => updateOrderStatus(order.id, status)}
+                              disabled={
+                                ORDER_STATUSES.indexOf(status) <
+                                  ORDER_STATUSES.indexOf(order.status) ||
+                                updateLoading[order.id]
+                              }
+                              className={`text-sm px-md py-xs rounded-lg font-semibold transition-all ${
+                                status === order.status
+                                  ? "btn btn-primary"
+                                  : updateLoading[order.id] ||
+                                    ORDER_STATUSES.indexOf(status) <
+                                      ORDER_STATUSES.indexOf(order.status)
+                                  ? "btn btn-ghost opacity-50 cursor-not-allowed"
+                                  : "btn btn-ghost hover:bg-base-700"
+                              }`}
+                            >
+                              {updateLoading[order.id] && status === order.status
+                                ? "..."
+                                : status}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Payment Controls */}
+                      {order.paymentStatus === "PENDING" && (
+                        <button
+                          onClick={() => confirmPayment(order.id)}
+                          disabled={updateLoading[order.id]}
+                          className="w-full btn btn-success"
+                        >
+                          {updateLoading[order.id] ? "Processing..." : "Confirm Payment"}
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
     </div>
