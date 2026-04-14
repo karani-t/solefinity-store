@@ -80,7 +80,7 @@ export default function SignUp() {
       });
 
       if (response.ok) {
-        router.push("/auth/signin?message=Account created successfully. Welcome to SoleFinity!");
+        router.push("/auth/signin?message=Account created successfully. Welcome to Groomers Cave!");
       } else {
         const data = await response.json();
         setError(data.error || "Failed to create account");
@@ -108,26 +108,26 @@ export default function SignUp() {
               <div className="flex items-center justify-center gap-3 mb-6">
                 <SoleFinityLogo size="large" />
               </div>
-              <div className="text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-400 via-pink-300 to-purple-300 tracking-tighter">
-                SOLE<span className="text-cyan-300">FINITY</span>
+              <div className="text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-300 tracking-tighter">
+                GROOMERS<span className="text-yellow-400 block text-4xl">CAVE</span>
               </div>
             </Link>
-            <p className="text-sm font-semibold text-gray-400 tracking-widest uppercase mt-3">
-              Premium Streetwear Hub
+            <p className="text-sm font-semibold text-amber-400 tracking-widest uppercase mt-3">
+              Premium Men's Grooming & Luxury Lifestyle
             </p>
-            <p className="text-gray-500 text-sm mt-4">
-              Join the crew. Own your style.
+            <p className="text-gray-400 text-sm mt-4">
+              Elevate your style. Own your presence.
             </p>
           </div>
 
           {/* Auth Form */}
           <AuthForm
             title="Create Account"
-            subtitle="Join SoleFinity and start shopping"
+            subtitle="Join Groomers Cave and discover premium grooming"
             error={error}
             isLoading={loading}
             onSubmit={handleSubmit}
-            submitLabel="Join SoleFinity"
+            submitLabel="Join Groomers Cave"
             bottomLink={{
               text: "Already have an account?",
               label: "Sign In",

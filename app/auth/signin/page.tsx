@@ -63,29 +63,29 @@ export default function SignIn() {
               <div className="flex items-center justify-center gap-3 mb-6">
                 <SoleFinityLogo size="large" />
               </div>
-              <div className="text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-400 via-pink-300 to-purple-300 tracking-tighter">
-                SOLE<span className="text-cyan-300">FINITY</span>
+              <div className="text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-300 tracking-tighter">
+                GROOMERS<span className="text-yellow-400 block text-4xl">CAVE</span>
               </div>
             </Link>
-            <p className="text-sm font-semibold text-gray-400 tracking-widest uppercase mt-3">
-              Premium Streetwear Hub
+            <p className="text-sm font-semibold text-amber-400 tracking-widest uppercase mt-3">
+              Premium Men's Grooming & Luxury Lifestyle
             </p>
-            <p className="text-gray-500 text-sm mt-4">
-              Step into your vibe. Connect with your crew.
+            <p className="text-gray-400 text-sm mt-4">
+              Enter your world of premium style.
             </p>
           </div>
 
           {/* Auth Form */}
           <AuthForm
             title="Welcome Back"
-            subtitle="Sign in to your SoleFinity account"
+            subtitle="Sign in to your Groomers Cave account"
             error={error}
             isLoading={loading}
             onSubmit={handleSubmit}
             submitLabel="Sign In"
             bottomLink={{
               text: "Don't have an account?",
-              label: "Join SoleFinity",
+              label: "Join Groomers Cave",
               href: "/auth/signup",
             }}
           >

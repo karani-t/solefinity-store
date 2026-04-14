@@ -48,32 +48,34 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
-      <header className="bg-black/40 backdrop-blur-sm border-b border-slate-700/50">
+      <header className="bg-black/40 backdrop-blur-sm border-b border-gold-500/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
-            <h1 className="text-3xl font-extrabold tracking-wide text-white">SoleFinity Streetwear</h1>
+            <h1 className="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-gold-400 to-amber-300">
+              Groomers Cave
+            </h1>
             <Nav />
           </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="bg-[radial-gradient(circle_at_top,_rgba(99,102,241,0.3),_rgba(15,23,42,0.75)_80%)] text-white">
+      <section className="bg-[radial-gradient(circle_at_top,_rgba(212,175,55,0.2),_rgba(15,23,42,0.75)_80%)] text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center">
-            <h2 className="text-4xl md:text-6xl font-bold mb-4">
-              Step Into Style
+            <h2 className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-gold-200 to-amber-200">
+              Elevate Your Style
             </h2>
             <p className="text-xl md:text-2xl mb-8 opacity-90">
-              Discover premium footwear for every occasion
+              Premium men's grooming, luxury fragrances, and exclusive lifestyle essentials
             </p>
             <div className="max-w-md mx-auto">
               <input
                 type="text"
-                placeholder="Search for shoes..."
+                placeholder="Search products..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white"
+                className="w-full px-4 py-3 rounded-lg text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gold-400 bg-white/90"
               />
             </div>
           </div>
@@ -117,40 +119,42 @@ export default function Home() {
         )}
       </main>
 
-      <footer className="bg-slate-900 border-t border-slate-700 mt-12">
+      <footer className="bg-black border-t border-gold-500/20 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h4 className="text-lg font-semibold text-white mb-4">SoleFinity</h4>
-              <p className="text-slate-300">
-                Your premier streetwear movement for premium sneakers and urban style.
+              <h4 className="text-lg font-black bg-clip-text text-transparent bg-gradient-to-r from-gold-400 to-amber-300 mb-4">
+                Groomers Cave
+              </h4>
+              <p className="text-slate-400">
+                Premium men's grooming, luxury fragrances, and exclusive lifestyle products for the discerning gentleman.
               </p>
             </div>
             <div>
-              <h4 className="text-lg font-semibold text-gray-900 mb-4">Quick Links</h4>
+              <h4 className="text-lg font-semibold text-gold-300 mb-4">Quick Links</h4>
               <ul className="space-y-2">
-                <li><a href="/" className="text-gray-600 hover:text-gray-900">Home</a></li>
-                <li><a href="/products" className="text-gray-600 hover:text-gray-900">Products</a></li>
-                <li><a href="/cart" className="text-gray-600 hover:text-gray-900">Cart</a></li>
+                <li><a href="/" className="text-slate-400 hover:text-gold-300 transition-colors">Home</a></li>
+                <li><a href="/products" className="text-slate-400 hover:text-gold-300 transition-colors">Products</a></li>
+                <li><a href="/cart" className="text-slate-400 hover:text-gold-300 transition-colors">Cart</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-lg font-semibold text-gray-900 mb-4">Support</h4>
+              <h4 className="text-lg font-semibold text-gold-300 mb-4">Support</h4>
               <ul className="space-y-2">
-                <li><a href="/orders" className="text-gray-600 hover:text-gray-900">My Orders</a></li>
-                <li><a href="/contact" className="text-gray-600 hover:text-gray-900">Contact Us</a></li>
-                <li><a href="/help" className="text-gray-600 hover:text-gray-900">Help</a></li>
+                <li><a href="/orders" className="text-slate-400 hover:text-gold-300 transition-colors">My Orders</a></li>
+                <li><a href="/dashboard/customer" className="text-slate-400 hover:text-gold-300 transition-colors">Dashboard</a></li>
+                <li><a href="/wishlist" className="text-slate-400 hover:text-gold-300 transition-colors">Wishlist</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-lg font-semibold text-gray-900 mb-4">Connect</h4>
-              <p className="text-gray-600">
-                Follow us for the latest trends and exclusive offers.
+              <h4 className="text-lg font-semibold text-gold-300 mb-4">Connect</h4>
+              <p className="text-slate-400">
+                Experience premium grooming excellence and exclusive lifestyle products.
               </p>
             </div>
           </div>
-          <div className="border-t mt-8 pt-8 text-center">
-            <p className="text-gray-500">© 2026 SoleFinity Store. All rights reserved.</p>
+          <div className="border-t border-base-800 mt-8 pt-8 text-center">
+            <p className="text-slate-500">© 2026 Groomers Cave. All rights reserved. | Premium Men's Grooming & Luxury Lifestyle</p>
           </div>
         </div>
       </footer>
