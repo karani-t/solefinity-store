@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
       phoneNumber,
       amountKES,
       orderId,
-      `SoleFinity Payment - Order #${order.orderNumber || orderId.slice(-8)}`
+      `Groomers Cave Payment - Order #${order.orderNumber || orderId.slice(-8)}`
     );
 
     if (!result.success) {

@@ -15,7 +15,7 @@ export class EmailService {
     const smtpPort = parseInt(process.env.SMTP_PORT || "587");
     const smtpUser = process.env.SMTP_USER || "";
     const smtpPass = process.env.SMTP_PASS || "";
-    const smtpFrom = process.env.SMTP_FROM || "noreply@solefinity.com";
+    const smtpFrom = process.env.SMTP_FROM || "noreply@groomerscave.com";
 
     this.transporter = nodemailer.createTransport({
       host: smtpHost,
@@ -116,7 +116,7 @@ export class EmailService {
         </div>
 
         <div style="background: #f8f9fa; padding: 20px; text-align: center; color: #666;">
-          <p style="margin: 0;">© 2026 SoleFinity Store. All rights reserved.</p>
+          <p style="margin: 0;">© 2026 Groomers Cave. All rights reserved. | Premium Men's Grooming & Luxury Lifestyle</p>
           <p style="margin: 5px 0 0 0;">Questions? Contact our support team.</p>
         </div>
       </div>
@@ -124,7 +124,7 @@ export class EmailService {
 
     try {
       await this.transporter.sendMail({
-        from: '"SoleFinity Store" <noreply@solefinity.com>',
+        from: '"Groomers Cave" <noreply@groomerscave.com>',
         to: customerEmail,
         subject: `Order Confirmation - #${orderId.slice(-8)}`,
         html,
@@ -180,7 +180,7 @@ export class EmailService {
           ` : ""}
 
           <div style="text-align: center; margin-top: 30px;">
-            <a href="${process.env.NEXTAUTH_URL || "https://solefinity.onrender.com"}/orders"
+            <a href="${process.env.NEXTAUTH_URL || "https://groomerscave.onrender.com"}/orders"
                style="background: #667eea; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;">
               View Order Details
             </a>
@@ -188,14 +188,14 @@ export class EmailService {
         </div>
 
         <div style="background: #f8f9fa; padding: 20px; text-align: center; color: #666;">
-          <p style="margin: 0;">© 2026 SoleFinity Store. All rights reserved.</p>
+          <p style="margin: 0;">© 2026 Groomers Cave. All rights reserved.</p>
         </div>
       </div>
     `;
 
     try {
       await this.transporter.sendMail({
-        from: '"SoleFinity Store" <noreply@solefinity.com>',
+        from: '"Groomers Cave" <noreply@groomerscave.com>',
         to: customerEmail,
         subject: `Order Update - #${orderId.slice(-8)}`,
         html,
@@ -249,7 +249,7 @@ export class EmailService {
           `}
 
           <div style="text-align: center; margin: 30px 0;">
-            <a href="${process.env.NEXTAUTH_URL || "https://solefinity.onrender.com"}/admin/reviews"
+            <a href="${process.env.NEXTAUTH_URL || "https://groomerscave.onrender.com"}/admin/reviews"
                style="background: #667eea; color: white; padding: 12px 30px; border-radius: 5px; text-decoration: none; font-weight: bold; display: inline-block;">
               View All Reviews
             </a>
@@ -266,7 +266,7 @@ export class EmailService {
         </div>
 
         <div style="background: #f8f9fa; padding: 20px; text-align: center; color: #666;">
-          <p style="margin: 0;">© 2026 SoleFinity Store. All rights reserved.</p>
+          <p style="margin: 0;">© 2026 Groomers Cave. All rights reserved.</p>
           <p style="margin: 5px 0 0 0;">This is an automated notification for new reviews.</p>
         </div>
       </div>
@@ -274,7 +274,7 @@ export class EmailService {
 
     try {
       await this.transporter.sendMail({
-        from: '"SoleFinity Store" <noreply@solefinity.com>',
+        from: '"Groomers Cave" <noreply@groomerscave.com>',
         to: adminEmails.join(", "),
         subject: `New Review: ${rating} Stars for ${productName}`,
         html,
@@ -295,7 +295,7 @@ export class EmailService {
 
     try {
       await this.transporter.sendMail({
-        from: process.env.SMTP_FROM || "noreply@solefinity.com",
+        from: process.env.SMTP_FROM || "noreply@groomerscave.com",
         to,
         subject,
         html,
@@ -320,7 +320,7 @@ export async function sendCredentialsEmail(email: string, name: string, password
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
       <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center;">
-        <h1 style="margin: 0; font-size: 28px;">Welcome to SoleFinity!</h1>
+        <h1 style="margin: 0; font-size: 28px;">Welcome to Groomers Cave!</h1>
         <p style="margin: 10px 0 0 0; opacity: 0.9;">Your account is ready</p>
       </div>
 
@@ -328,7 +328,7 @@ export async function sendCredentialsEmail(email: string, name: string, password
         <h2 style="color: #333; margin-bottom: 20px;">Hello ${name},</h2>
 
         <p style="font-size: 16px; line-height: 1.6; color: #555;">
-          Your account has been created as a <strong>${role}</strong> user in the SoleFinity system.
+          Your account has been created as a <strong>${role}</strong> user in the Groomers Cave system.
         </p>
 
         <div style="background: #e8f5e8; padding: 20px; border-radius: 5px; margin: 20px 0;">
@@ -365,17 +365,17 @@ export async function sendCredentialsEmail(email: string, name: string, password
       </div>
 
       <div style="background: #f8f9fa; padding: 20px; text-align: center; color: #666; font-size: 12px;">
-        <p style="margin: 0;">© 2026 SoleFinity Store. All rights reserved.</p>
-        <p style="margin: 5px 0 0 0;">Questions? Contact our support team at support@solefinity.com</p>
+        <p style="margin: 0;">© 2026 Groomers Cave. All rights reserved.</p>
+        <p style="margin: 5px 0 0 0;">Questions? Contact our support team at support@groomerscave.com</p>
       </div>
     </div>
   `;
 
   try {
     await emailService.transporter.sendMail({
-      from: '"SoleFinity Admin" <noreply@solefinity.com>',
+      from: '"Groomers Cave" <noreply@groomerscave.com>',
       to: email,
-      subject: `[SoleFinity] Welcome ${name}! Your Account is Ready`,
+      subject: `[Groomers Cave] Welcome ${name}! Your Account is Ready`,
       html,
     });
     console.log(`📧 [EMAIL] Credentials sent to ${email} (${role})`);

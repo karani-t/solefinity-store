@@ -89,7 +89,7 @@ export function Sidebar() {
           <div className="flex items-center gap-md">
             <SoleFinityLogo size="small" />
             <div>
-              <div className="font-semibold text-text-primary">SoleFinity</div>
+              <div className="font-semibold text-text-primary">Groomers Cave</div>
               <div className="text-caption text-text-muted uppercase">{session?.user.role}</div>
             </div>
           </div>

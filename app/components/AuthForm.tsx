@@ -84,7 +84,7 @@ export function AuthForm({
 
         {/* Branding */}
         <div className="text-center mt-xl text-caption text-text-muted">
-          <p>SoleFinity © 2026</p>
+          <p>Groomers Cave © 2026</p>
         </div>
       </div>
     </div>

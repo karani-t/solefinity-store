@@ -76,7 +76,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
               {/* Logo */}
               <Link href="/" className="font-bold text-xl text-white hover:text-purple-300 transition">
-                SoleFinity Admin
+                Groomers Cave Admin
               </Link>
 
               {/* Right side */}
@@ -194,7 +194,7 @@ function AdminSidebarContent({ navigation, session, isActive, onClose }: {
       {/* Footer */}
       <div className="p-4 border-t border-purple-700/40">
         <div className="text-xs text-gray-400 text-center">
-          <p>© 2026 SoleFinity Admin</p>
+          <p>© 2026 Groomers Cave Admin</p>
           <p className="mt-1">Version 1.0.0</p>
         </div>
       </div>

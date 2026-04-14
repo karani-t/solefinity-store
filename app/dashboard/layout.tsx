@@ -111,7 +111,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
               {/* Logo */}
               <Link href="/" className="font-bold text-xl text-white hover:text-purple-300 transition">
-                SoleFinity
+                Groomers Cave
               </Link>
 
               {/* Right side */}
@@ -209,7 +209,7 @@ function SidebarContent({ navigation, session, isActive, onClose }: {
       {/* Footer */}
       <div className="p-4 border-t border-purple-700/40">
         <div className="text-xs text-gray-400 text-center">
-          <p>© 2026 SoleFinity Store</p>
+          <p>© 2026 Groomers Cave</p>
           <p className="mt-1">Version 1.0.0</p>
         </div>
       </div>

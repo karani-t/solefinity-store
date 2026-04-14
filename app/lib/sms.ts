@@ -62,7 +62,7 @@ export class SMSService {
       PENDING: `Your order #${orderId} has been received. Payment pending.`,
       CONFIRMED: `Payment confirmed! Order #${orderId} being prepared for shipment.`,
       SHIPPED: `Your order #${orderId} has been shipped. Track at https://sole.ke/track/${orderId}`,
-      DELIVERED: `Order #${orderId} delivered! Thank you for shopping with SoleFinity.`,
+      DELIVERED: `Order #${orderId} delivered! Thank you for shopping with Groomers Cave.`,
       CANCELLED: `Order #${orderId} has been cancelled.`,
     };
 
@@ -119,7 +119,7 @@ export class SMSService {
     password: string,
     role: string
   ): Promise<{ success: boolean; error?: string }> {
-    const message = `Welcome to SoleFinity, ${name}! 🎉\n\nYour login credentials:\nEmail: ${email}\nPassword: ${password}\n\nRole: ${role}\n\nVisit: solefinity.com/signin to log in.`;
+    const message = `Welcome to Groomers Cave, ${name}! 🎉\n\nYour login credentials:\nEmail: ${email}\nPassword: ${password}\n\nRole: ${role}\n\nVisit: groomerscave.com/signin to log in.`;
 
     return this.sendSMS({
       phoneNumber,
@@ -132,7 +132,7 @@ export class SMSService {
    * Send OTP for 2FA
    */
   async sendOTP(phoneNumber: string, code: string): Promise<{ success: boolean; error?: string }> {
-    const message = `Your SoleFinity verification code is: ${code}. Valid for 10 minutes.`;
+    const message = `Your Groomers Cave verification code is: ${code}. Valid for 10 minutes.`;
 
     return this.sendSMS({
       phoneNumber,
