@@ -75,10 +75,13 @@ export default function CustomerDashboard() {
         description="Manage your orders, wishlist, and account settings"
       />
 
-      {/* Quick Actions */}
+      {/* Quick Actions - Premium Cards */}
       <div>
-        <h2 className="text-h2 font-semibold text-text-primary mb-lg">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-lg">
+        <div className="flex items-center gap-md mb-lg">
+          <h2 className="text-h2 font-bold text-text-primary">Quick Actions</h2>
+          <span className="text-xs uppercase letter-spacing-1 text-text-muted font-semibold">Essentials</span>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-md">
           <QuickActionCard
             title="Shop Now"
             description="Browse and discover new products"
@@ -105,7 +108,12 @@ export default function CustomerDashboard() {
 
       {/* Orders Section */}
       <div>
-        <h2 className="text-h2 font-semibold text-text-primary mb-lg">Your Orders</h2>
+        <div className="flex items-center justify-between gap-lg mb-lg">
+          <h2 className="text-h2 font-bold text-text-primary">Your Orders</h2>
+          <Link href="/orders" className="text-accent-500 hover:text-accent-400 text-sm font-semibold transition-colors duration-200">
+            View All →
+          </Link>
+        </div>
         <OrderList
           orders={orders}
           emptyMessage="No orders yet. Start shopping to place your first order!"
@@ -113,12 +121,15 @@ export default function CustomerDashboard() {
         />
       </div>
 
-      {/* CTA Section */}
+      {/* CTA Section - Premium Empty State */}
       {orders.length === 0 && (
-        <div className="card-lg text-center py-xxxl">
-          <h3 className="text-h3 font-semibold text-text-primary mb-lg">Ready to explore?</h3>
-          <p className="text-body text-text-secondary mb-xl">
-            Discover our exclusive collection of premium streetwear
+        <div className="card bg-gradient-to-br from-accent-500/10 to-accent-500/5 border border-accent-500/20 text-center py-xxxl px-lg">
+          <div className="mb-lg">
+            <div className="text-accent-500 text-5xl mb-lg">✨</div>
+          </div>
+          <h3 className="text-h2 font-bold text-text-primary mb-md">Ready to explore?</h3>
+          <p className="text-body text-text-secondary mb-xl max-w-md mx-auto">
+            Discover our exclusive collection of premium grooming products and lifestyle essentials
           </p>
           <Link href="/products" className="btn btn-primary">
             Start Shopping

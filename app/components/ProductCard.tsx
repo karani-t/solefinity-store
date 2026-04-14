@@ -102,44 +102,39 @@ export default function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <Link href={`/products/${product.id}`} className="block group">
-      <div className="card-interactive h-full flex flex-col">
-        {/* Image Container */}
-        <div className="relative h-56 bg-base-800 rounded-lg overflow-hidden mb-lg flex items-center justify-center group-hover:-translate-y-1 transition-transform duration-smooth">
+    <Link href={`/products/${product.id}`} className="block group h-full">
+      <div className="h-full flex flex-col bg-base-100 border border-base-300 transition-all duration-200 group-hover:border-accent-500/50 group-hover:shadow-lg overflow-hidden">
+        {/* Premium Image Container - Large Focus Area */}
+        <div className="relative w-full aspect-square bg-gradient-to-br from-base-900 to-base-800 overflow-hidden flex items-center justify-center group-hover:from-base-800 group-hover:to-base-700 transition-colors duration-200">
           {product.image && !imageError ? (
             <Image
               src={product.image}
               alt={product.name}
-              width={300}
-              height={224}
+              width={400}
+              height={400}
               unoptimized
-              className="object-cover w-full h-full transition-transform duration-smooth group-hover:scale-110"
+              className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
               onError={() => setImageError(true)}
             />
           ) : (
-            <div className="flex flex-col items-center justify-center text-text-muted">
-              <svg className="w-12 h-12 mb-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            <div className="flex flex-col items-center justify-center text-text-muted px-lg">
+              <svg className="w-16 h-16 mb-md opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
-              <span className="text-caption">No Image</span>
+              <span className="text-body-xs text-text-muted">Product Image</span>
             </div>
           )}
 
-          {/* Stock Status Badges */}
+          {/* Stock Status - Minimal Overlay */}
           <div className="absolute inset-0 pointer-events-none">
             {product.stock === 0 && (
-              <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                <span className="font-semibold text-text-primary">Out of Stock</span>
-              </div>
-            )}
-            {product.stock <= 5 && product.stock > 0 && (
-              <div className="absolute top-md right-md">
-                <span className="badge badge-warning">Low Stock</span>
+              <div className="absolute inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center">
+                <span className="font-bold text-text-primary text-lg tracking-wide">OUT OF STOCK</span>
               </div>
             )}
           </div>
 
-          {/* Wishlist Button */}
+          {/* Wishlist Button - Premium Positioning */}
           <button
             onClick={(e) => {
               e.preventDefault();
@@ -147,10 +142,10 @@ export default function ProductCard({ product }: ProductCardProps) {
               handleWishlistToggle();
             }}
             disabled={wishlistLoading}
-            className={`absolute top-md left-md pointer-events-auto p-md rounded-lg transition-all duration-smooth shadow-md hover:scale-110 active:scale-95 ${
+            className={`absolute top-lg right-lg pointer-events-auto p-md rounded-full transition-all duration-200 hover:scale-110 active:scale-95 ${
               isWishlisted
-                ? 'bg-error text-white'
-                : 'bg-white/90 text-text-secondary hover:text-error'
+                ? 'bg-accent-500 text-text-primary shadow-lg'
+                : 'bg-white/95 text-text-secondary hover:bg-white shadow-md hover:shadow-lg'
             }`}
             title={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
           >
@@ -162,45 +157,52 @@ export default function ProductCard({ product }: ProductCardProps) {
               </svg>
             )}
           </button>
+
+          {/* Low Stock Badge - Top Left */}
+          {product.stock <= 5 && product.stock > 0 && (
+            <div className="absolute top-lg left-lg">
+              <span className="badge badge-warning font-semibold text-white text-xs px-md py-sm">Only {product.stock} left</span>
+            </div>
+          )}
         </div>
 
-        {/* Content */}
-        <div className="flex flex-col flex-1">
+        {/* Content Area - Clean Typography Hierarchy */}
+        <div className="flex flex-col flex-1 p-lg space-y-md">
           {/* Category Badge */}
           {product.category && (
-            <div className="mb-md">
-              <span className="badge badge-accent text-caption uppercase">
+            <div>
+              <span className="badge badge-accent text-xs uppercase font-bold letter-spacing-1">
                 {product.category}
               </span>
             </div>
           )}
 
-          {/* Title */}
-          <h3 className="text-h4 font-semibold text-text-primary mb-xs line-clamp-2">
+          {/* Title - Bold, Clear, Editorial */}
+          <h3 className="text-h4 font-bold text-text-primary line-clamp-2 leading-tight">
             {product.name}
           </h3>
 
-          {/* Description */}
+          {/* Description - Subtle, Secondary */}
           {product.description && (
-            <p className="text-body-sm text-text-secondary mb-lg line-clamp-2">
+            <p className="text-body-xs text-text-muted line-clamp-2 leading-relaxed">
               {product.description}
             </p>
           )}
 
-          {/* Price & Stock Info */}
-          <div className="flex-between mb-lg mt-auto">
+          {/* Spacer - Breathing Room */}
+          <div className="flex-1" />
+
+          {/* Price - Gold Emphasis */}
+          <div className="flex items-baseline gap-md pt-md border-t border-base-200">
             <span className="text-h3 font-bold text-accent-500">
               KES {formatKES(product.priceKES ?? product.price ?? 0)}
             </span>
-            <span className={`text-caption font-semibold ${
-              product.stock > 10 ? 'text-success' :
-              product.stock > 0 ? 'text-warning' : 'text-error'
-            }`}>
-              {product.stock > 0 ? `${product.stock} left` : 'Out of stock'}
+            <span className="text-caption text-text-muted">
+              per unit
             </span>
           </div>
 
-          {/* Add to Cart Button */}
+          {/* Add to Cart Button - Premium CTA */}
           <button
             onClick={(e) => {
               e.preventDefault();
@@ -208,15 +210,15 @@ export default function ProductCard({ product }: ProductCardProps) {
               handleAddToCart();
             }}
             disabled={product.stock === 0 || isAdding}
-            className={`btn btn-lg w-full hover:scale-102 active:scale-95 transition-transform ${
+            className={`btn w-full text-base font-semibold transition-all duration-200 ${
               product.stock === 0
-                ? 'opacity-50 cursor-not-allowed'
-                : 'btn-primary'
+                ? 'btn-ghost opacity-50 cursor-not-allowed'
+                : 'btn-primary hover:shadow-lg active:scale-95'
             }`}
           >
             {isAdding ? (
               <div className="flex items-center justify-center gap-md">
-                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
+                <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent" />
                 <span>Adding...</span>
               </div>
             ) : product.stock === 0 ? (

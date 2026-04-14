@@ -145,10 +145,10 @@ export default function StaffDashboardClient() {
           {/* Toast Notification */}
           {toast && (
             <div
-              className={`fixed top-lg right-lg px-lg py-md rounded-lg shadow-lg transition-opacity duration-3000 ${
+              className={`fixed top-lg right-lg px-lg py-md rounded-lg shadow-lg z-50 transition-opacity duration-3000 ${
                 toast.type === "success"
-                  ? "bg-success/20 border border-success text-success"
-                  : "bg-error/20 border border-error text-error"
+                  ? "bg-success/20 border border-success text-success font-medium"
+                  : "bg-error/20 border border-error text-error font-medium"
               }`}
             >
               {toast.message}
@@ -156,31 +156,33 @@ export default function StaffDashboardClient() {
           )}
 
           {/* Header with Reports Button */}
-          <div className="flex-between mb-xxxl">
+          <div className="flex-between mb-xxxl gap-lg">
             <div>
-              <h1 className="text-h1 font-bold">Staff Dashboard</h1>
-              <p className="text-text-secondary text-body mt-md">Manage orders and process payments</p>
+              <h1 className="text-h1 font-bold text-text-primary">Staff Dashboard</h1>
+              <p className="text-text-muted text-body mt-md">Process orders, manage payments, monitor status</p>
             </div>
             <Link 
               href="/dashboard/staff/reports" 
-              className="btn btn-secondary flex-center gap-md"
+              className="btn btn-primary flex-center gap-md hover:shadow-lg transition-all"
             >
               <BarChart3 className="w-5 h-5" />
-              <span>Reports</span>
+              <span>Analytics</span>
             </Link>
           </div>
 
-          {/* Stats Cards */}
+          {/* Stats Cards Grid */}
           <div className="grid-cols-responsive mb-xxxl">
             <StatCard 
               label="Total Sales"
               value={`KES ${formatKES(stats.totalSales)}`}
               color="accent"
+              trend={{ value: 15, isPositive: true }}
             />
             <StatCard 
               label="Orders Processed"
               value={stats.ordersProcessed.toString()}
               color="success"
+              trend={{ value: 8, isPositive: true }}
             />
             <StatCard 
               label="Pending Payments"
@@ -189,16 +191,16 @@ export default function StaffDashboardClient() {
             />
           </div>
 
-          {/* Filter Buttons */}
-          <div className="flex gap-md mb-xxxl flex-wrap">
+          {/* Filter Buttons - Premium Style */}
+          <div className="flex gap-md mb-xxxl flex-wrap pb-lg border-b border-base-800">
             {(["ALL", "PENDING", "PROCESSING", "PAID_AWAITING"] as const).map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
-                className={`${
+                className={`px-lg py-md rounded-md transition-all duration-200 font-semibold text-sm uppercase letter-spacing-1 ${
                   filter === f
-                    ? "btn btn-primary"
-                    : "btn btn-ghost hover:bg-base-800"
+                    ? "btn btn-primary shadow-md"
+                    : "text-text-secondary hover:text-text-primary hover:bg-base-800/50"
                 }`}
               >
                 {f === "PAID_AWAITING" ? "To Ship" : f}
@@ -206,17 +208,17 @@ export default function StaffDashboardClient() {
             ))}
           </div>
 
-          {/* Orders Table */}
+          {/* Orders Section */}
           <div className="space-y-md">
             {filteredOrders.length === 0 ? (
-              <div className="card-lg text-center py-xxxl">
-                <p className="text-text-muted">No orders found</p>
+              <div className="card bg-base-900 border border-base-800 text-center py-xxxl">
+                <p className="text-text-muted">No orders found for this filter</p>
               </div>
             ) : (
               filteredOrders.map((order) => (
                 <div
                   key={order.id}
-                  className="card-lg overflow-hidden transition-all hover:border-accent-500/30"
+                  className="card bg-base-900 border border-base-800 hover:border-accent-500/50 transition-all duration-200 overflow-hidden hover:shadow-md"
                 >
                   <button
                     onClick={() =>
@@ -224,15 +226,15 @@ export default function StaffDashboardClient() {
                         expandedOrder === order.id ? null : order.id
                       )
                     }
-                    className="w-full px-lg py-md flex-between hover:bg-base-800/50 transition-colors"
+                    className="w-full px-lg py-lg flex-between hover:bg-base-800/30 transition-colors group"
                   >
                     <div className="flex-1 text-left">
                       <div className="flex-center gap-md mb-md">
-                        <h3 className="font-bold text-lg">
+                        <h3 className="font-bold text-lg text-text-primary group-hover:text-accent-400 transition-colors">
                           Order #{order.orderNumber || order.id.slice(-8)}
                         </h3>
                         <span
-                          className={`text-xs px-md py-xs rounded-full font-semibold ${
+                          className={`text-xs px-md py-xs rounded-md font-bold uppercase letter-spacing-1 ${
                             order.status === "DELIVERED"
                               ? "badge badge-success"
                               : order.status === "SHIPPED"
@@ -245,7 +247,7 @@ export default function StaffDashboardClient() {
                           {order.status}
                         </span>
                         <span
-                          className={`text-xs px-md py-xs rounded-full font-semibold ${
+                          className={`text-xs px-md py-xs rounded-md font-bold uppercase letter-spacing-1 ${
                             order.paymentStatus === "PAID"
                               ? "badge badge-success"
                               : "badge badge-warning"

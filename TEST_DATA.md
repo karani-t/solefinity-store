@@ -1,7 +1,8 @@
-# 🎯 SOLEFINITY - COMPLETE TEST DATA & CREDENTIALS
+# 🎯 GROOMERS CAVE - COMPLETE TEST DATA & CREDENTIALS
 
 **Last Generated:** April 14, 2026  
 **Status:** ✅ Production Ready for Testing
+**Brand:** Premium Men's Grooming & Luxury Lifestyle
 
 ---
 
@@ -23,7 +24,7 @@
 
 ### ADMIN ACCOUNT
 ```
-Email:    admin@solefinity.com
+Email:    admin@groomerscave.com
 Password: Admin@123
 Role:     Administrator
 ```
@@ -32,13 +33,13 @@ Role:     Administrator
 ### STAFF ACCOUNTS (2)
 ```
 Staff Member 1:
-Email:    staff.john@solefinity.com
+Email:    staff.john@groomerscave.com
 Password: Staff@123
 Role:     STAFF (Sales Department)
 ID:       STAFF-001
 
 Staff Member 2:
-Email:    staff.grace@solefinity.com
+Email:    staff.grace@groomerscave.com
 Password: Staff@123
 Role:     STAFF (Inventory Department)
 ID:       STAFF-002
@@ -48,7 +49,7 @@ ID:       STAFF-002
 ### DISTRIBUTOR ACCOUNTS (2)
 ```
 Distributor 1:
-Email:       distributor.nairobi@solefinity.com
+Email:       distributor.nairobi@groomerscave.com
 Password:    Dist@123
 Role:        DISTRIBUTOR
 Business:    Njeri Retail Solutions
@@ -58,7 +59,7 @@ Credit Limit: KES 500,000 (Used: KES 125,000)
 Payment Terms: 30 days
 
 Distributor 2:
-Email:       distributor.mombasa@solefinity.com
+Email:       distributor.mombasa@groomerscave.com
 Password:    Dist@123
 Role:        DISTRIBUTOR
 Business:    Coastal Wholesale
@@ -97,9 +98,9 @@ Phone:    +254712345022
 
 | Role | Count | Email Pattern | Status |
 |------|-------|---|--------|
-| Admin | 1 | admin@solefinity.com | ✅ Active |
-| Staff | 2 | staff.{name}@solefinity.com | ✅ Approved |
-| Distributor | 2 | distributor.{location}@solefinity.com | ✅ Approved |
+| Admin | 1 | admin@groomerscave.com | ✅ Active |
+| Staff | 2 | staff.{name}@groomerscave.com | ✅ Approved |
+| Distributor | 2 | distributor.{location}@groomerscave.com | ✅ Approved |
 | Customer | 3 | customer.{name}@gmail.com | ✅ Active |
 | **TOTAL** | **8 Users** | | |
 
@@ -107,25 +108,27 @@ Phone:    +254712345022
 
 ## 👟 PRODUCTS CATALOG
 
-### 12 Premium Footwear Products
+### 28 Premium Products (8 Categories)
 
 | # | Product Name | Category | Price (KES) | Stock | Status |
 |---|---|---|---|---|---|
-| 1 | Air Max Running Shoes | Running | 15,999 | 45 | ✅ In Stock |
-| 2 | Urban Street Sneakers | Casual | 8,999 | 60 | ✅ In Stock |
-| 3 | Professional Basketball Shoes | Basketball | 17,999 | 25 | ✅ In Stock |
-| 4 | Trail Hiking Boots | Hiking | 21,999 | 18 | ⚠️ Low Stock |
-| 5 | Classic Leather Loafers | Formal | 12,999 | 35 | ✅ In Stock |
-| 6 | Casual Canvas Shoes | Casual | 4,999 | 80 | ✅ In Stock |
-| 7 | Tennis Performance Shoes | Tennis | 13,999 | 30 | ✅ In Stock |
-| 8 | Winter Boots Premium | Winter | 18,999 | 22 | ✅ In Stock |
-| 9 | Soccer Cleats Pro | Soccer | 16,999 | 28 | ✅ In Stock |
-| 10 | Sandals Comfort Plus | Sandals | 3,999 | 55 | ✅ In Stock |
-| 11 | Cycling Shoes Aero | Cycling | 24,999 | 15 | ⚠️ Low Stock |
-| 12 | Kids Sports Shoes | Kids | 6,999 | 40 | ✅ In Stock |
+| 1 | Air Max Running Shoes | Shoes | 15,999 | 45 | ✅ In Stock |
+| 2 | Urban Street Sneakers | Shoes | 8,999 | 60 | ✅ In Stock |
+| 3 | Professional Basketball Shoes | Shoes | 17,999 | 25 | ✅ In Stock |
+| 4 | Trail Hiking Boots | Shoes | 21,999 | 18 | ⚠️ Low Stock |
+| 5 | Classic Leather Loafers | Shoes | 12,999 | 35 | ✅ In Stock |
+| 6 | Casual Canvas Shoes | Shoes | 4,999 | 80 | ✅ In Stock |
+| 7 | Tennis Performance Shoes | Shoes | 13,999 | 30 | ✅ In Stock |
+| 8 | Winter Boots Premium | Shoes | 18,999 | 22 | ✅ In Stock |
+| 9 | Club de Nuit Intense Man | Designer Perfumes | 7,999 | 50 | ✅ In Stock |
+| 10 | Dior Sauvage Eau de Toilette | Designer Perfumes | 12,999 | 38 | ✅ In Stock |
+| 11 | Creed Aventus | Designer Perfumes | 18,999 | 25 | ✅ In Stock |
+| 12 | Tom Ford Noir | Designer Perfumes | 14,999 | 32 | ✅ In Stock |
+| 13-28 | *Additional products across Body Sprays, Pocket Perfumes, Smart Collections, Wallets, Belts, Boxers* | *Various* | *Varies* | *Varies* | ✅ In Stock |
 
-**Total Inventory Value:** ~2,450,000 KES  
+**Total Inventory Value:** ~2,800,000 KES  
 **Total Low Stock Items:** 2 (below threshold of 20)
+**Total Categories:** 8 (Shoes, Designer Perfumes, Body Sprays, Pocket Perfumes, Smart Collections, Wallets, Belts, Boxers)
 
 ---
 
@@ -219,10 +222,11 @@ Tracking: TRACK-2026-04-14-003
 - In Transit: 1 (20%)
 
 **Product Management:**
-- Total Products: 12
-- Total Inventory: ~445 units
-- Total Inventory Value: ~2,450,000 KES
+- Total Products: 28
+- Total Inventory: ~1,200+ units
+- Total Inventory Value: ~2,800,000 KES
 - Low Stock Items: 2 (Trail Hiking Boots, Cycling Shoes)
+- Categories: 8 (Shoes, Perfumes, Body Sprays, Pocket Perfumes, Smart Collections, Wallets, Belts, Boxers)
 
 **Staff Management:**
 - John Mutua (STAFF-001) - Sales Department - Rating: 4.5/5
@@ -464,7 +468,7 @@ Status: Awaiting admin approval
 **Objective:** Test staff role and order management
 
 1. **Login as Staff (John Mutua)**
-   - Email: staff.john@solefinity.com
+   - Email: staff.john@groomerscave.com
    - Password: Staff@123
 
 2. **View Dashboard**
@@ -494,7 +498,7 @@ Status: Awaiting admin approval
 **Objective:** Test distributor features and inventory alerts
 
 1. **Login as Distributor (Nairobi)**
-   - Email: distributor.nairobi@solefinity.com
+   - Email: distributor.nairobi@groomerscave.com
    - Password: Dist@123
 
 2. **Check Dashboard**
@@ -522,7 +526,7 @@ Status: Awaiting admin approval
 **Objective:** Test admin analytics and management tools
 
 1. **Login as Admin**
-   - Email: admin@solefinity.com
+   - Email: admin@groomerscave.com
    - Password: Admin@123
 
 2. **Dashboard Analytics**
@@ -653,5 +657,5 @@ npm run dev
 ---
 
 **Generated:** April 14, 2026  
-**System:** SoleFinity E-commerce Platform  
+**System:** Groomers Cave - Premium Men's Grooming & Luxury Lifestyle Platform  
 **Status:** ✅ Ready for QA Testing

@@ -91,41 +91,53 @@ export default async function AdminDashboard() {
         />
       </div>
 
-      {/* Quick Actions */}
+      {/* Quick Actions - Management Cards */}
       <div>
-        <h2 className="text-h2 font-semibold text-text-primary mb-lg">Management</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg">
+        <div className="flex items-center gap-md mb-lg">
+          <h2 className="text-h2 font-bold text-text-primary">Quick Access</h2>
+          <span className="text-xs uppercase letter-spacing-1 text-text-muted font-semibold">Management</span>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md">
           {[
             {
               label: "Products",
               href: "/admin/products",
               icon: <Package className="w-6 h-6" />,
+              description: "Manage inventory",
             },
             {
               label: "Staff",
               href: "/admin/staff",
               icon: <Users className="w-6 h-6" />,
+              description: "Team management",
             },
             {
               label: "Distributors",
               href: "/admin/distributors",
               icon: <TrendingUp className="w-6 h-6" />,
+              description: "Partner network",
             },
             {
               label: "Reviews",
               href: "/admin/reviews",
               icon: <AlertTriangle className="w-6 h-6" />,
+              description: "Content moderation",
             },
           ].map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="card-interactive group flex flex-col items-center justify-center py-xxxl text-center hover:bg-base-700"
+              className="group card bg-gradient-to-br from-base-900 to-base-800 border border-base-800 hover:border-accent-500/50 transition-all duration-200 hover:shadow-lg flex flex-col p-lg"
             >
-              <div className="mb-lg text-accent-500 group-hover:text-accent-400 transition-smooth">
+              <div className="mb-lg text-accent-500 group-hover:text-accent-400 transition-colors duration-200">
                 {item.icon}
               </div>
-              <h3 className="text-h4 font-semibold text-text-primary">{item.label}</h3>
+              <h3 className="text-h4 font-bold text-text-primary mb-xs">{item.label}</h3>
+              <p className="text-body-xs text-text-muted">{item.description}</p>
+              <div className="flex-1" />
+              <div className="text-xs text-accent-400 font-semibold mt-md opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                → Open
+              </div>
             </Link>
           ))}
         </div>
@@ -144,45 +156,56 @@ export default async function AdminDashboard() {
         />
       )}
 
-      {/* Recent Orders Table */}
+      {/* Recent Orders Table - Premium Layout */}
       <div>
-        <h2 className="text-h2 font-semibold text-text-primary mb-lg">Recent Orders</h2>
-        <div className="card-lg overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-base-800">
-                <th className="text-label text-text-muted text-left px-lg py-md">Order ID</th>
-                <th className="text-label text-text-muted text-left px-lg py-md">Customer</th>
-                <th className="text-label text-text-muted text-left px-lg py-md">Amount</th>
-                <th className="text-label text-text-muted text-left px-lg py-md">Items</th>
-                <th className="text-label text-text-muted text-left px-lg py-md">Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders.map((order) => (
-                <tr
-                  key={order.id}
-                  className="border-b border-base-800 hover:bg-base-800/50 transition-smooth"
-                >
-                  <td className="px-lg py-lg text-body text-text-primary font-mono">
-                    {order.id.slice(0, 8)}...
-                  </td>
-                  <td className="px-lg py-lg text-body text-text-primary">
-                    {order.user?.email || "Unknown"}
-                  </td>
-                  <td className="px-lg py-lg text-body text-accent-500 font-semibold">
-                    KES {formatKES(order.totalPriceKES || 0)}
-                  </td>
-                  <td className="px-lg py-lg text-body text-text-secondary">
-                    {order.items.length} items
-                  </td>
-                  <td className="px-lg py-lg text-body text-text-secondary">
-                    {new Date(order.createdAt).toLocaleDateString()}
-                  </td>
+        <div className="flex items-center justify-between gap-lg mb-lg">
+          <h2 className="text-h2 font-bold text-text-primary">Recent Orders</h2>
+          <Link href="/admin/analytics" className="text-accent-500 hover:text-accent-400 text-sm font-semibold transition-colors duration-200">
+            View All Orders →
+          </Link>
+        </div>
+        <div className="card bg-base-900 border border-base-800 overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-gradient-to-r from-base-800 to-base-800/50 border-b border-base-800">
+                <tr>
+                  <th className="text-label text-text-muted text-left px-lg py-md font-bold uppercase letter-spacing-1 text-xs">Order ID</th>
+                  <th className="text-label text-text-muted text-left px-lg py-md font-bold uppercase letter-spacing-1 text-xs">Customer</th>
+                  <th className="text-label text-text-muted text-left px-lg py-md font-bold uppercase letter-spacing-1 text-xs">Amount</th>
+                  <th className="text-label text-text-muted text-left px-lg py-md font-bold uppercase letter-spacing-1 text-xs">Items</th>
+                  <th className="text-label text-text-muted text-left px-lg py-md font-bold uppercase letter-spacing-1 text-xs">Date</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-base-800">
+                {orders.map((order, idx) => (
+                  <tr
+                    key={order.id}
+                    className="hover:bg-base-800/40 transition-colors duration-150 group"
+                  >
+                    <td className="px-lg py-lg text-body text-accent-400 font-mono font-semibold group-hover:text-accent-300 transition-colors">
+                      #{order.id.slice(0, 8)}
+                    </td>
+                    <td className="px-lg py-lg text-body text-text-primary font-medium">
+                      {order.user?.email || "Unknown"}
+                    </td>
+                    <td className="px-lg py-lg text-body font-bold">
+                      <span className="text-accent-500">KES {formatKES(order.totalPriceKES || 0)}</span>
+                    </td>
+                    <td className="px-lg py-lg text-body text-text-secondary">
+                      <span className="inline-block px-md py-xs bg-base-800 rounded text-text-primary font-medium">{order.items.length}</span>
+                    </td>
+                    <td className="px-lg py-lg text-body text-text-muted">
+                      {new Date(order.createdAt).toLocaleDateString("en-US", { 
+                        year: "numeric", 
+                        month: "short", 
+                        day: "numeric" 
+                      })}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

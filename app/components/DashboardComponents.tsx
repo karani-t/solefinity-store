@@ -25,14 +25,17 @@ export function QuickActionCard({
 
   return (
     <Link href={href}>
-      <div className="card-interactive group h-full flex flex-col items-start justify-start">
+      <div className="card bg-gradient-to-br from-base-900 to-base-800 border border-base-800 hover:border-accent-500/50 transition-all duration-200 hover:shadow-lg group h-full flex flex-col items-start justify-start p-lg">
         {icon && (
-          <div className={`text-h2 mb-lg transition-smooth ${colorMap[color]}`}>
+          <div className={`text-3xl mb-lg transition-colors duration-200 ${colorMap[color]}`}>
             {icon}
           </div>
         )}
-        <h3 className="text-h4 font-semibold text-text-primary mb-md">{title}</h3>
-        <p className="text-body-sm text-text-secondary">{description}</p>
+        <h3 className="text-h4 font-bold text-text-primary mb-md">{title}</h3>
+        <p className="text-body-sm text-text-muted flex-1">{description}</p>
+        <div className="text-xs text-accent-400 font-semibold mt-md opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          → Explore
+        </div>
       </div>
     </Link>
   );
@@ -56,26 +59,30 @@ interface OrderListProps {
 export function OrderList({ orders, emptyMessage = "No orders yet", onOrderClick }: OrderListProps) {
   if (orders.length === 0) {
     return (
-      <div className="card-lg text-center py-xxxl">
-        <p className="text-body text-text-secondary mb-lg">{emptyMessage}</p>
+      <div className="card bg-base-900 border border-base-800 text-center py-xxxl px-lg">
+        <p className="text-body text-text-muted">{emptyMessage}</p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-md">
+    <div className="space-y-xs">
       {orders.map((order) => (
         <button
           key={order.id}
           onClick={() => onOrderClick?.(order.id)}
-          className="card-interactive w-full text-left flex-between"
+          className="card bg-base-900 border border-base-800 hover:border-accent-500/50 transition-all duration-200 hover:shadow-md w-full text-left flex-between p-lg active:scale-95 group"
         >
           <div>
-            <p className="text-body font-semibold text-text-primary">
+            <p className="text-body font-bold text-text-primary group-hover:text-accent-400 transition-colors duration-200">
               Order #{order.orderNumber || order.id.slice(-8)}
             </p>
             <p className="text-caption text-text-muted mt-xs">
-              {new Date(order.createdAt).toLocaleDateString()}
+              {new Date(order.createdAt).toLocaleDateString("en-US", { 
+                year: "numeric", 
+                month: "short", 
+                day: "numeric" 
+              })}
             </p>
           </div>
 
@@ -85,7 +92,7 @@ export function OrderList({ orders, emptyMessage = "No orders yet", onOrderClick
             </p>
             <div className="flex gap-md mt-md justify-end">
               <span
-                className={`badge text-caption ${
+                className={`badge text-caption font-semibold ${
                   order.status === "DELIVERED"
                     ? "badge-success"
                     : order.status === "SHIPPED"
@@ -96,7 +103,7 @@ export function OrderList({ orders, emptyMessage = "No orders yet", onOrderClick
                 {order.status}
               </span>
               <span
-                className={`badge text-caption ${
+                className={`badge text-caption font-semibold ${
                   order.paymentStatus === "PAID" ? "badge-success" : "badge-error"
                 }`}
               >
