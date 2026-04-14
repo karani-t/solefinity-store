@@ -1,0 +1,411 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  password      String
+  name          String
+  phone         String?  @unique
+  role          String   @default("CUSTOMER")
+  isActive      Boolean  @default(true)
+  lastLogin     DateTime?
+  resetToken    String?  // Password reset token
+  resetTokenExpiry DateTime? // When the reset token expires
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  orders              Order[]
+  sentMessages        Message[] @relation("MessageSender")
+  receivedMessages    Message[] @relation("MessageReceiver")
+  reviews             Review[]
+  staffProfile        StaffProfile?
+  distributorProfile  DistributorProfile?
+  inventoryLogs       InventoryLog[]
+  mpesaPayments       MpesaPayment[]
+  wishlists           Wishlist[]
+  supportTickets      SupportTicket[]
+  ticketResponses     TicketResponse[]
+
+  @@map("users")
+}
+
+model StaffProfile {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  staffId         String   @unique // Employee ID
+  department      String   // "Sales", "Inventory", "Management", "Distribution"
+  warehouseId     String?
+  salary          Float?
+  performanceRating Float @default(0)
+  isApproved      Boolean @default(false)
+  approvedBy      String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  warehouse Warehouse? @relation(fields: [warehouseId], references: [id])
+
+  @@map("staff_profiles")
+}
+
+model DistributorProfile {
+  id                  String   @id @default(cuid())
+  userId              String   @unique
+  businessName        String
+  businessType        String   // "Retail", "Wholesale", "Supermarket"
+  phoneNumber         String
+  location            String
+  county              String   // Kenyan county
+  taxId               String?
+  retailerLicense     String?
+  creditLimit         Float   @default(0)
+  creditUsed          Float   @default(0)
+  paymentTerms        Int     @default(30) // Days
+  isApproved          Boolean @default(false)
+  approvedBy          String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  // Relations
+  user                    User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  distributorOrders       DistributorOrder[]
+  lowStockNotifications   LowStockNotification[]
+  activities              DistributorActivity[]
+
+  @@map("distributor_profiles")
+}
+
+model Warehouse {
+  id              String   @id @default(cuid())
+  name            String
+  location        String
+  county          String   // Kenyan county
+  capacity        Int      // Storage units
+  currentStock    Int      @default(0)
+  manager         String?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  staffProfiles   StaffProfile[]
+  batches         ProductBatch[]
+  inventoryLogs   InventoryLog[]
+
+  @@map("warehouses")
+}
+
+model Product {
+  id                  String   @id @default(cuid())
+  name                String
+  description         String?
+  sku                 String?  // Make optional initially for migration
+  priceKES            Float?   // Make optional initially for migration
+  costPriceKES        Float?   // Make optional initially for migration
+  image               String?
+  stock               Int      @default(0)
+  lowStockThreshold   Int      @default(5)
+  reorderQuantity     Int      @default(20)
+  category            String?
+  taxRate             Float    @default(0.16) // 16% VAT by default
+  isActive            Boolean  @default(true)
+  expiryDays          Int?     // Days until expiry (null = non-perishable)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  // Relations
+  orderItems          OrderItem[]
+  reviews             Review[]
+  batches             ProductBatch[]
+  inventoryLogs       InventoryLog[]
+  distributorPrices   DistributorPrice[]
+  wishlists           Wishlist[]
+  lowStockNotifications LowStockNotification[]
+
+  @@map("products")
+}
+
+model Wishlist {
+  id         String   @id @default(cuid())
+  userId     String
+  productId  String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@map("wishlists")
+}
+
+model ProductBatch {
+  id              String   @id @default(cuid())
+  productId       String
+  batchNumber     String
+  warehouseId     String
+  quantityIn      Int
+  quantityOut     Int     @default(0)
+  quantityAvailable Int  @default(0)
+  manufactureDateOn DateTime
+  expiryDate      DateTime?
+  costPriceKES    Float
+  status          String   @default("ACTIVE") // ACTIVE, EXPIRED, SOLD_OUT
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id])
+
+  @@map("product_batches")
+  @@unique([batchNumber, warehouseId])
+}
+
+model Order {
+  id                  String      @id @default(cuid())
+  orderNumber         String?     @unique // Make optional initially
+  userId              String
+  status              String      @default("PENDING")
+  totalPriceKES       Float?      // Optional for migration
+  taxAmountKES        Float       @default(0)
+  discountKES         Float       @default(0)
+  paymentMethod       String?     // "MPESA", "CARD", "CASH"
+  paymentStatus       String      @default("PENDING")
+  shippingAddress     String?
+  trackingNumber      String?
+  estimatedDelivery   DateTime?
+  deliveredAt         DateTime?
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+
+  // Relations
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items     OrderItem[]
+  payment   MpesaPayment?
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id            String @id @default(cuid())
+  orderId       String
+  productId     String
+  quantity      Int
+  priceKES      Float?  // Optional for migration
+  taxedPriceKES Float?  // Optional for migration
+
+  // Relations
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+
+  @@map("order_items")
+}
+
+model MpesaPayment {
+  id              String   @id @default(cuid())
+  orderId         String   @unique
+  userId          String
+  phoneNumber     String
+  amountKES       Float
+  transactionRef  String
+  transactionCode String?
+  status          String   @default("PENDING") // PENDING, SUCCESS, FAILED
+  errorMessage    String?
+  paidAt          DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  order       Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  user        User   @relation(fields: [userId], references: [id])
+
+  @@map("mpesa_payments")
+  @@unique([transactionRef])
+}
+
+model DistributorPrice {
+  id          String  @id @default(cuid())
+  productId   String
+  minQuantity Int     // Minimum quantity for this tier
+  priceKES    Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("distributor_prices")
+}
+
+model DistributorOrder {
+  id                  String   @id @default(cuid())
+  orderNumber         String?  @unique // Optional initially
+  distributorId       String
+  status              String   @default("PENDING") // PENDING, APPROVED, DISPATCHED, DELIVERED
+  totalPriceKES       Float?   // Optional for migration
+  taxAmountKES        Float   @default(0)
+  paymentTermsUsed    Int?            // Days
+  isPaid              Boolean  @default(false)
+  paymentDueDate      DateTime?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  // Relations
+  distributor DistributorProfile @relation(fields: [distributorId], references: [id], onDelete: Cascade)
+
+  @@map("distributor_orders")
+}
+
+model InventoryLog {
+  id          String   @id @default(cuid())
+  productId   String
+  warehouseId String
+  userId      String
+  type        String   // "IN", "OUT", "ADJUSTMENT", "EXPIRED"
+  quantity    Int
+  reason      String?  // "Sale", "Return", "Damage", "Expiry"
+  notes       String?
+  createdAt   DateTime @default(now())
+
+  // Relations
+  product   Product   @relation(fields: [productId], references: [id])
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
+
+  @@map("inventory_logs")
+}
+
+model TaxRate {
+  id        String   @id @default(cuid())
+  name      String   @unique // "Standard VAT", "Excise Duty"
+  rate      Float    // As decimal (e.g., 0.16 for 16%)
+  applicableTo String // "PRODUCTS", "SERVICES"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("tax_rates")
+}
+
+model Message {
+  id         String   @id @default(cuid())
+  senderId   String
+  receiverId String
+  subject    String
+  content    String
+  read       Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  // Relations
+  sender   User @relation("MessageSender", fields: [senderId], references: [id])
+  receiver User @relation("MessageReceiver", fields: [receiverId], references: [id])
+
+  @@map("messages")
+}
+
+model Review {
+  id            String   @id @default(cuid())
+  userId        String
+  productId     String
+  rating        Int      // 1-5 stars
+  comment       String?
+  isApproved    Boolean  @default(false)
+  adminResponse String?
+  respondedBy   String?
+  respondedAt   DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("reviews")
+}
+
+model LowStockNotification {
+  id              String   @id @default(cuid())
+  productId       String
+  distributorId   String
+  currentStock    Int
+  threshold       Int
+  isRead          Boolean  @default(false)
+  dismissedAt     DateTime?
+  createdAt       DateTime @default(now())
+
+  // Relations
+  product     Product             @relation(fields: [productId], references: [id], onDelete: Cascade)
+  distributor DistributorProfile  @relation(fields: [distributorId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, distributorId, createdAt])
+  @@map("low_stock_notifications")
+}
+
+model DistributorActivity {
+  id              String   @id @default(cuid())
+  distributorId   String
+  activityType    String   // "RESTOCK", "ORDER_PLACED", "MESSAGE_SENT", "PRICE_VIEW", "PROFILE_UPDATE"
+  description     String
+  relatedOrderId  String?
+  relatedProductId String?
+  metadata        String?  // JSON string for additional data
+  createdAt       DateTime @default(now())
+
+  // Relations
+  distributor DistributorProfile @relation(fields: [distributorId], references: [id], onDelete: Cascade)
+
+  @@map("distributor_activities")
+  @@index([distributorId, createdAt])
+}
+
+model SupportTicket {
+  id              String   @id @default(cuid())
+  ticketNumber    String   @unique
+  userId          String
+  subject         String
+  description     String
+  category        String   // "PAYMENT", "DELIVERY", "PRODUCT", "ACCOUNT", "OTHER"
+  priority        String   @default("MEDIUM") // "LOW", "MEDIUM", "HIGH", "URGENT"
+  status          String   @default("OPEN") // "OPEN", "IN_PROGRESS", "RESOLVED", "CLOSED"
+  attachments     String?  // JSON string of file URLs
+  resolution      String?
+  resolvedBy      String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  resolvedAt      DateTime?
+
+  // Relations
+  user            User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  responses       TicketResponse[]
+
+  @@map("support_tickets")
+  @@index([userId, status, createdAt])
+}
+
+model TicketResponse {
+  id              String   @id @default(cuid())
+  ticketId        String
+  respondentId    String
+  message         String
+  attachments     String?  // JSON string of file URLs
+  createdAt       DateTime @default(now())
+
+  // Relations
+  ticket          SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  respondent      User          @relation(fields: [respondentId], references: [id], onDelete: Cascade)
+
+  @@map("ticket_responses")
+  @@index([ticketId, createdAt])
+}
