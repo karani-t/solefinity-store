@@ -106,8 +106,8 @@ export function Sidebar() {
                 onClick={closeSidebar}
                 className={`flex items-center gap-md px-lg py-md rounded-lg transition-smooth ${
                   isActive
-                    ? "bg-accent-500 text-white shadow-md"
-                    : "text-text-secondary hover:bg-base-800 hover:text-text-primary"
+                    ? "bg-accent-500 text-white shadow-md scale-105"
+                    : "text-text-secondary hover:bg-base-800 hover:text-text-primary hover:scale-102 active:scale-95"
                 }`}
               >
                 {item.icon}
@@ -127,7 +127,7 @@ export function Sidebar() {
           <Link
             href="/dashboard/account"
             onClick={closeSidebar}
-            className="flex items-center gap-md px-lg py-md rounded-lg text-text-secondary hover:bg-base-800 hover:text-text-primary transition-smooth"
+            className="flex items-center gap-md px-lg py-md rounded-lg text-text-secondary hover:bg-base-800 hover:text-text-primary transition-smooth hover:scale-102 active:scale-95"
           >
             <User className="w-5 h-5" />
             <span className="font-medium text-body">Profile</span>
@@ -137,7 +137,7 @@ export function Sidebar() {
               closeSidebar();
               signOut({ callbackUrl: "/auth/signin" });
             }}
-            className="w-full flex items-center gap-md px-lg py-md rounded-lg text-error hover:bg-red-950/20 transition-smooth text-body font-medium"
+            className="w-full flex items-center gap-md px-lg py-md rounded-lg text-error hover:bg-red-950/20 transition-smooth text-body font-medium hover:scale-102 active:scale-95"
           >
             <LogOut className="w-5 h-5" />
             <span>Sign Out</span>

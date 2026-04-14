@@ -113,7 +113,7 @@ export function OrderList({ orders, emptyMessage = "No orders yet", onOrderClick
 export function LoadingSpinner() {
   return (
     <div className="flex-center min-h-screen bg-base-950">
-      <div className="animate-spin rounded-full h-12 w-12 border-2 border-base-700 border-t-accent-500" />
+      <div className="spinner spinner-md" />
     </div>
   );
 }

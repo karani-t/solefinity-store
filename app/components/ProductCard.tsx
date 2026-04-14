@@ -105,7 +105,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     <Link href={`/products/${product.id}`} className="block group">
       <div className="card-interactive h-full flex flex-col">
         {/* Image Container */}
-        <div className="relative h-56 bg-base-800 rounded-lg overflow-hidden mb-lg flex items-center justify-center">
+        <div className="relative h-56 bg-base-800 rounded-lg overflow-hidden mb-lg flex items-center justify-center group-hover:-translate-y-1 transition-transform duration-smooth">
           {product.image && !imageError ? (
             <Image
               src={product.image}
@@ -113,7 +113,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               width={300}
               height={224}
               unoptimized
-              className="object-cover w-full h-full transition-smooth group-hover:scale-105"
+              className="object-cover w-full h-full transition-transform duration-smooth group-hover:scale-110"
               onError={() => setImageError(true)}
             />
           ) : (
@@ -147,7 +147,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               handleWishlistToggle();
             }}
             disabled={wishlistLoading}
-            className={`absolute top-md left-md pointer-events-auto p-md rounded-lg transition-smooth shadow-md ${
+            className={`absolute top-md left-md pointer-events-auto p-md rounded-lg transition-all duration-smooth shadow-md hover:scale-110 active:scale-95 ${
               isWishlisted
                 ? 'bg-error text-white'
                 : 'bg-white/90 text-text-secondary hover:text-error'
@@ -208,7 +208,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               handleAddToCart();
             }}
             disabled={product.stock === 0 || isAdding}
-            className={`btn btn-lg w-full ${
+            className={`btn btn-lg w-full hover:scale-102 active:scale-95 transition-transform ${
               product.stock === 0
                 ? 'opacity-50 cursor-not-allowed'
                 : 'btn-primary'

@@ -42,7 +42,7 @@ export function AuthForm({
 
           {/* Error Alert */}
           {error && (
-            <div className="mb-lg p-lg rounded-lg bg-error/10 border border-error/30">
+            <div className="mb-lg p-lg rounded-lg bg-error/10 border border-error/30 animate-bounce-soft" aria-role="alert">
               <p className="text-body-sm text-error">{error}</p>
             </div>
           )}
@@ -55,11 +55,11 @@ export function AuthForm({
             <button
               type="submit"
               disabled={isLoading}
-              className="btn btn-primary w-full"
+              className="btn btn-primary w-full hover:scale-102 active:scale-95 transition-transform disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {isLoading ? (
                 <div className="flex-center gap-md">
-                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
+                  <div className="spinner spinner-sm" />
                   <span>Loading...</span>
                 </div>
               ) : (
@@ -131,7 +131,7 @@ export function FormField({
         disabled={disabled}
         value={value}
         onChange={onChange}
-        className={`input ${error ? "input-error" : ""} ${
+        className={`input focus-ring ${error ? "input-error" : ""} ${
           disabled ? "input-disabled" : ""
         }`}
       />

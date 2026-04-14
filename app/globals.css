@@ -298,3 +298,434 @@
     opacity: 1;
   }
 }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* PHASE 5: MOTION & POLISH SYSTEM */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+@layer components {
+  /* Enhanced Button Motion */
+  .btn {
+    @apply relative overflow-hidden;
+  }
+
+  .btn::before {
+    @apply absolute inset-0 bg-white/0 transition-all duration-smooth;
+    content: "";
+  }
+
+  .btn:hover::before {
+    @apply bg-white/10;
+  }
+
+  .btn:active {
+    @apply scale-95 transition-transform duration-fast;
+  }
+
+  .btn-primary:hover {
+    @apply -translate-y-0.5 shadow-lg;
+  }
+
+  .btn-secondary:hover {
+    @apply -translate-y-0.5 shadow-md;
+  }
+
+  /* Card Motion */
+  .card-interactive:hover {
+    @apply -translate-y-1 shadow-lg;
+  }
+
+  .card:hover {
+    @apply border-base-600;
+  }
+
+  /* Input Focus Enhancement */
+  .input:focus {
+    @apply scale-y-105;
+  }
+
+  /* Loading Spinner */
+  .spinner {
+    @apply inline-block rounded-full border-2 border-base-700 border-t-accent-500;
+    animation: spin 1s linear infinite;
+  }
+
+  .spinner-sm {
+    @apply w-4 h-4;
+  }
+
+  .spinner-md {
+    @apply w-6 h-6;
+  }
+
+  .spinner-lg {
+    @apply w-8 h-8;
+  }
+
+  /* Skeleton Loader */
+  .skeleton {
+    @apply bg-base-800 rounded-lg;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .skeleton-text {
+    @apply h-4 w-full;
+  }
+
+  .skeleton-avatar {
+    @apply h-12 w-12 rounded-full;
+  }
+
+  .skeleton-card {
+    @apply h-64 w-full;
+  }
+
+  /* Pulse Animation */
+  .pulse-subtle {
+    animation: pulse-subtle 2s ease-in-out infinite;
+  }
+
+  /* Bounce Animation */
+  .bounce-soft {
+    animation: bounce-soft 1s ease-in-out infinite;
+  }
+
+  /* Fade variants */
+  .fade-in-up {
+    animation: fadeInUp 500ms ease-out;
+  }
+
+  .fade-in-down {
+    animation: fadeInDown 500ms ease-out;
+  }
+
+  .fade-in-left {
+    animation: fadeInLeft 500ms ease-out;
+  }
+
+  .fade-in-right {
+    animation: fadeInRight 500ms ease-out;
+  }
+
+  /* Scale hover effect */
+  .hover-scale {
+    @apply transition-transform duration-smooth;
+  }
+
+  .hover-scale:hover {
+    @apply scale-105;
+  }
+
+  .hover-scale:active {
+    @apply scale-95;
+  }
+
+  /* Glow effect */
+  .glow-accent {
+    @apply relative;
+  }
+
+  .glow-accent::after {
+    @apply absolute inset-0 rounded-lg bg-accent-500/20 blur-xl opacity-0 transition-opacity duration-smooth;
+    content: "";
+    pointer-events: none;
+  }
+
+  .glow-accent:hover::after {
+    @apply opacity-100;
+  }
+
+  /* Tab underline animation */
+  .tab-indicator {
+    @apply relative pb-md border-b-2 border-transparent transition-colors duration-smooth;
+  }
+
+  .tab-indicator.active {
+    @apply border-accent-500 text-accent-500;
+  }
+
+  /* Smooth scroll behavior */
+  .scroll-smooth {
+    scroll-behavior: smooth;
+  }
+
+  /* Responsive container queries fallback */
+  @media (max-width: 640px) {
+    .btn-sm {
+      @apply px-md py-xs text-caption;
+    }
+
+    .card {
+      @apply p-md;
+    }
+
+    .card-lg {
+      @apply p-lg;
+    }
+  }
+}
+
+@layer utilities {
+  /* Transform utilities */
+  .translate-y-0-5 {
+    transform: translateY(-0.125rem);
+  }
+
+  .scale-y-105 {
+    transform: scaleY(1.05);
+  }
+
+  /* Responsive grid columns */
+  @media (max-width: 768px) {
+    .grid-cols-responsive {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .grid-cols-responsive {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Stagger animation delay utilities */
+  .delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .delay-400 {
+    animation-delay: 400ms;
+  }
+
+  .delay-500 {
+    animation-delay: 500ms;
+  }
+
+  /* Opacity transitions */
+  .opacity-hover-30 {
+    @apply opacity-100 hover:opacity-70 transition-opacity duration-smooth;
+  }
+
+  .opacity-hover-50 {
+    @apply opacity-100 hover:opacity-50 transition-opacity duration-smooth;
+  }
+
+  /* Focus visible for keyboard navigation */
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 focus-visible:ring-offset-base-950 transition-all duration-fast;
+  }
+
+  /* Text gradient animation */
+  .text-gradient-animate {
+    background: linear-gradient(90deg, #3B82F6, #8B5CF6, #3B82F6);
+    background-size: 200% auto;
+    animation: gradient-slide 3s ease infinite;
+  }
+
+  /* Enhanced responsive utilities */
+  .responsive-padding {
+    @apply p-md md:p-lg lg:p-xxxl;
+  }
+
+  .responsive-gap {
+    @apply gap-md md:gap-lg lg:gap-xl;
+  }
+
+  .responsive-grid-2 {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .responsive-grid-3 {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .responsive-grid-4 {
+    @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4;
+  }
+
+  /* Mobile-first text sizing */
+  .responsive-text {
+    @apply text-body md:text-body-lg lg:text-h4;
+  }
+
+  /* Responsive button sizing for touch */
+  @media (max-width: 640px) {
+    .btn {
+      @apply min-h-11 min-w-11;
+    }
+  }
+
+  /* Enhanced touch targets */
+  @media (hover: none) {
+    .touch-target {
+      @apply min-h-12 min-w-12;
+    }
+  }
+
+  /* Responsive container widths */
+  .container-responsive {
+    @apply w-full px-md md:px-lg lg:px-xxxl max-w-7xl mx-auto;
+  }
+
+  /* Improved mobile grid layouts */
+  .grid-cols-auto-sm {
+    @apply grid grid-cols-1 sm:grid-cols-2 gap-md;
+  }
+
+  .grid-cols-auto-md {
+    @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-md;
+  }
+
+  /* Mobile-optimized flex layouts */
+  @media (max-width: 640px) {
+    .flex-responsive {
+      @apply flex flex-col gap-md;
+    }
+  }
+
+  @media (min-width: 641px) {
+    .flex-responsive {
+      @apply flex flex-row gap-lg;
+    }
+  }
+
+  /* Responsive max-widths */
+  .max-w-responsive {
+    @apply w-full max-w-sm md:max-w-lg lg:max-w-4xl;
+  }
+
+  /* Safe area spacing for notched devices */
+  .safe-area-top {
+    padding-top: max(1rem, env(safe-area-inset-top));
+  }
+
+  .safe-area-bottom {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  .safe-area-left {
+    padding-left: max(1rem, env(safe-area-inset-left));
+  }
+
+  .safe-area-right {
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+
+  /* Landscape orientation utilities */
+  @media (orientation: landscape) and (max-height: 600px) {
+    .hide-in-landscape {
+      display: none;
+    }
+  }
+
+  /* Print-friendly utilities */
+  @media print {
+    .no-print {
+      display: none;
+    }
+  }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* KEYFRAMES - PHASE 5 ANIMATIONS */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes bounce-soft {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes gradient-slide {
+  0% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+  100% {
+    background-position: 0% center;
+  }
+}
