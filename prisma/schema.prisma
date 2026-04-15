@@ -36,6 +36,7 @@ model User {
   wishlists           Wishlist[]
   supportTickets      SupportTicket[]
   ticketResponses     TicketResponse[]
+  activityLogs        ActivityLog[]
 
   @@map("users")
 }
@@ -408,4 +409,41 @@ model TicketResponse {
 
   @@map("ticket_responses")
   @@index([ticketId, createdAt])
+}
+
+// Activity Logging - Track all user actions for security & compliance
+model ActivityLog {
+  id            String   @id @default(cuid())
+  userId        String
+  action        String   // "LOGIN", "LOGOUT", "CREATE_ORDER", "APPROVE_REVIEW", "DELETE_PRODUCT", etc.
+  resource      String?  // Resource affected (e.g., "Product:123", "Order:456")
+  description   String
+  status        String   @default("SUCCESS") // "SUCCESS", "FAILED", "ATTEMPTED"
+  ipAddress     String?
+  userAgent     String?  // Browser/client info
+  metadata      String?  // JSON string for additional context
+  createdAt     DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("activity_logs")
+  @@index([userId, createdAt])
+  @@index([action, createdAt])
+  @@index([status, createdAt])
+}
+
+// Login Attempt Tracking - Detect brute force & suspicious activity
+model LoginAttempt {
+  id        String   @id @default(cuid())
+  email     String
+  status    String   // "SUCCESS", "FAILED"
+  reason    String?  // "INVALID_PASSWORD", "USER_NOT_FOUND", "USER_INACTIVE", etc.
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@map("login_attempts")
+  @@index([email, createdAt])
+  @@index([status, createdAt])
 }

@@ -20,7 +20,7 @@ cd ~/Desktop/SoleFinity/solefinity-store
 git init
 git add .
 git commit -m "Deploy to production"
-git remote add origin https://github.com/YOUR_USERNAME/solefinity-store.git
+git remote add origin https://github.com/karani-t/solefinity-store
 git branch -M main
 git push -u origin main
 ```
