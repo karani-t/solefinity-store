@@ -46,23 +46,27 @@ export function SoleFinityText({ size = "medium", showTagline = false }: { size?
   return (
     <div className="flex flex-col items-center gap-1">
       <div className={`${textSizes[size]} font-black tracking-tight`}>
-        <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">
-          SOLE
+        <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-400 to-accent-500">
+          GROOMERS
         </span>
-        <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-500 to-blue-600 ml-1">
-          FINITY
+        <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent-500 to-accent-600 ml-1">
+          CAVE
         </span>
       </div>
-      {showTagline && <p className="text-xs font-semibold text-gray-500 tracking-widest uppercase">Premium Streetwear</p>}
+      {showTagline && <p className="text-xs font-semibold text-accent-400 tracking-widest uppercase">Premium Grooming & Lifestyle</p>}
     </div>
   );
 }
 
-export function SoleFinityFullLogo({ horizontal = false, size = "medium" }: { horizontal?: boolean; size?: "small" | "medium" | "large" }) {
+export function GroomersCaveFullLogo({ horizontal = false, size = "medium" }: { horizontal?: boolean; size?: "small" | "medium" | "large" }) {
   return (
     <div className={`flex ${horizontal ? "flex-row items-center gap-3" : "flex-col items-center gap-2"} group`}>
       <SoleFinityLogo size={size} className="group-hover:scale-110 transition-transform duration-300" />
       <SoleFinityText size={size} showTagline={size === "large"} />
     </div>
   );
+}
+
+export function GroomersCaveLogo({ size = "small", className = "" }: { size?: "small" | "medium" | "large"; className?: string }) {
+  return <SoleFinityLogo size={size} className={className} />;
 }

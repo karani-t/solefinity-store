@@ -25,14 +25,14 @@ const config: Config = {
         'text-secondary': '#A1A1AA',
         'text-muted': '#71717A',
 
-        // Accent - Electric Blue (primary interaction)
-        'accent-50': '#F0F9FF',
-        'accent-100': '#E0F2FE',
-        'accent-300': '#7DD3FC',
-        'accent-500': '#3B82F6',
-        'accent-600': '#2563EB',
-        'accent-700': '#1D4ED8',
-        'accent-900': '#0C2340',
+        // Accent - Premium Gold (primary interaction)
+        'accent-50': '#FFFBF0',
+        'accent-100': '#FFF7E6',
+        'accent-300': '#E8C547',
+        'accent-500': '#D4AF37',
+        'accent-600': '#B8941B',
+        'accent-700': '#9A7C1A',
+        'accent-900': '#6B5A0D',
 
         // Semantic colors
         'success': '#22C55E',
@@ -90,7 +90,8 @@ const config: Config = {
         'md': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
         'lg': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
         'xl': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-        'focus-glow': '0 0 0 3px rgba(59, 130, 246, 0.1), 0 0 0 4px rgba(59, 130, 246, 0.5)',
+        'focus-glow': '0 0 0 3px rgba(212, 175, 55, 0.1), 0 0 0 4px rgba(212, 175, 55, 0.5)',
+        'gold-glow': '0 0 20px rgba(212, 175, 55, 0.2)',
       },
 
       transitionDuration: {

@@ -158,10 +158,22 @@ export default function ProductCard({ product }: ProductCardProps) {
             )}
           </button>
 
-          {/* Low Stock Badge - Top Left */}
-          {product.stock <= 5 && product.stock > 0 && (
-            <div className="absolute top-md left-md">
-              <span className="badge badge-warning font-bold text-white text-xs px-2 py-0.5">Only {product.stock}</span>
+          {/* Low Stock Badge & Premium Badges - Top Left */}
+          <div className="absolute top-md left-md flex flex-col gap-1">
+            {product.stock <= 5 && product.stock > 0 && (
+              <span className="badge badge-warning font-bold text-white text-xs px-2 py-0.5">⚡ LOW STOCK</span>
+            )}
+            {product.stock === 0 && (
+              <span className="badge badge-error font-bold text-white text-xs px-2 py-0.5">⊗ OUT</span>
+            )}
+          </div>
+          
+          {/* Premium Badge - Top Right */}
+          {product.price > 15000 && (
+            <div className="absolute top-md right-12">
+              <span className="inline-block badge bg-gradient-to-r from-accent-500 to-accent-600 text-white font-black text-xs px-2 py-1 rounded-full shadow-lg shadow-accent-500/30">
+                ⭐ PREMIUM
+              </span>
             </div>
           )}
         </div>

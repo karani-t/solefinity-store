@@ -194,7 +194,7 @@
   }
 
   .badge-accent {
-    @apply bg-accent-900 text-accent-300;
+    @apply bg-accent-900 text-accent-100;
   }
 
   .badge-success {
