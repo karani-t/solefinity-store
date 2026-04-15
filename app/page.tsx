@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import ProductCard from "./components/ProductCard";
 import Nav from "./components/Nav";
+import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./lib/auth";
 
@@ -16,6 +17,15 @@ async function getProducts() {
   }
   return res.json();
 }
+
+const CATEGORIES = [
+  { name: "Shoes", icon: "👟" },
+  { name: "Designer Perfumes", icon: "🏆" },
+  { name: "Body Sprays", icon: "💨" },
+  { name: "Pocket Perfumes", icon: "💼" },
+  { name: "Smart Collections", icon: "⚡" },
+  { name: "Wallets", icon: "💳" },
+];
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -46,12 +56,14 @@ export default function Home() {
     setFilteredProducts(filtered);
   }, [searchTerm, products]);
 
+  const bestSellers = products.slice(0, 8);
+
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
-      <header className="bg-black/40 backdrop-blur-sm border-b border-gold-500/20">
+    <div className="min-h-screen bg-base-950 text-white">
+      <header className="sticky top-0 z-40 bg-black/60 backdrop-blur-md border-b border-accent-500/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <h1 className="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-gold-400 to-amber-300">
+          <div className="flex justify-between items-center py-4 sm:py-6">
+            <h1 className="text-2xl sm:text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-accent-400 to-yellow-300">
               Groomers Cave
             </h1>
             <Nav />
@@ -59,102 +71,222 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="bg-[radial-gradient(circle_at_top,_rgba(212,175,55,0.2),_rgba(15,23,42,0.75)_80%)] text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="text-center">
-            <h2 className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-gold-200 to-amber-200">
-              Elevate Your Style
-            </h2>
-            <p className="text-xl md:text-2xl mb-8 opacity-90">
-              Premium men's grooming, luxury fragrances, and exclusive lifestyle essentials
-            </p>
-            <div className="max-w-md mx-auto">
-              <input
-                type="text"
-                placeholder="Search products..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gold-400 bg-white/90"
-              />
+      {/* Premium Hero Section with Animation */}
+      <section className="relative bg-gradient-to-b from-base-900 via-base-950 to-base-950 overflow-hidden">
+        {/* Animated background gradients */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(212,175,55,0.15),transparent_50%)] opacity-40"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_rgba(212,175,55,0.1),transparent_60%)] opacity-30"></div>
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-32">
+          <div className="text-center space-y-6 sm:space-y-8">
+            {/* Animated headline */}
+            <div className="animate-fade-in-up">
+              <h2 className="text-4xl sm:text-5xl lg:text-7xl font-black tracking-tight mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white via-accent-200 to-accent-400">
+                Elevate Your Style
+              </h2>
+              <div className="h-1 w-24 bg-gradient-to-r from-accent-500 to-accent-300 mx-auto rounded-full"></div>
+            </div>
+            
+            {/* Animated subtitle */}
+            <div className="animate-fade-in-up animate-stagger-1">
+              <p className="text-lg sm:text-xl lg:text-2xl text-text-muted max-w-2xl mx-auto leading-relaxed">
+                Premium men's grooming, luxury fragrances, and exclusive lifestyle essentials curated for the discerning gentleman
+              </p>
+            </div>
+            
+            {/* Animated search */}
+            <div className="animate-fade-in-up animate-stagger-2 max-w-md mx-auto w-full">
+              <div className="relative group">
+                <input
+                  type="text"
+                  placeholder="Discover premium products..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full px-4 sm:px-6 py-3 sm:py-4 rounded-lg text-base-950 placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-500 bg-white/95 hover:bg-white transition-all duration-300"
+                />
+                <div className="absolute inset-0 bg-accent-500/20 rounded-lg blur-lg group-focus-within:blur-xl transition-all duration-300 -z-10 opacity-0 group-focus-within:opacity-100"></div>
+              </div>
+            </div>
+            
+            {/* CTA Buttons */}
+            <div className="animate-fade-in-up animate-stagger-3 flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/products" className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-accent-500 to-accent-600 text-white font-bold rounded-lg hover:shadow-lg hover:shadow-accent-500/30 transition-all duration-300 hover:scale-105">
+                Shop Now →
+              </Link>
+              <Link href="#categories" className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 border-2 border-accent-500/50 text-accent-400 font-bold rounded-lg hover:bg-accent-500/10 hover:border-accent-500 transition-all duration-300">
+                Explore Categories
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {loading ? (
-          <div className="flex justify-center items-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-fuchsia-500"></div>
-          </div>
-        ) : (
-          <>
-            <div className="mb-8">
-              <h3 className="text-2xl md:text-4xl font-black text-white mb-2">
-                {searchTerm ? `Search Results for "${searchTerm}"` : "Featured Drops"}
-              </h3>
-              <p className="text-slate-300">
-                {filteredProducts.length} {filteredProducts.length === 1 ? "product" : "products"} found
-              </p>
+      <main className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Categories Section */}
+        {!searchTerm && (
+          <section className="py-16 sm:py-24" id="categories">
+            <div className="animate-fade-in-up mb-12">
+              <h2 className="text-3xl sm:text-5xl font-black mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-accent-300">
+                Shop by Category
+              </h2>
+              <p className="text-text-muted text-lg">Curated collections for every gentleman</p>
             </div>
+            
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+              {CATEGORIES.map((category, idx) => (
+                <Link
+                  key={category.name}
+                  href={`/products?category=${category.name}`}
+                  className="animate-fade-in-up group relative overflow-hidden rounded-lg border border-base-800 hover:border-accent-500/50 p-4 sm:p-6 text-center transition-all duration-300 hover:shadow-lg hover:shadow-accent-500/10"
+                  style={{ animationDelay: `${idx * 100}ms` }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-accent-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="relative z-10 flex flex-col items-center gap-2 sm:gap-3">
+                    <span className="text-2xl sm:text-3xl group-hover:scale-110 transition-transform duration-300">{category.icon}</span>
+                    <p className="text-xs sm:text-sm font-bold text-text-primary group-hover:text-accent-400 transition-colors duration-300">{category.name}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
-            {filteredProducts.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="text-gray-400 mb-4">
-                  <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
+        {/* Products Section */}
+        <section className="py-12 sm:py-16 lg:py-24">
+          {loading ? (
+            <div className="flex justify-center items-center py-16 sm:py-24">
+              <div className="animate-spin rounded-full h-12 w-12 border-4 border-accent-600/30 border-t-accent-500"></div>
+            </div>
+          ) : (
+            <>
+              <div className="mb-8 sm:mb-12 animate-fade-in-up">
+                <h3 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-accent-300">
+                  {searchTerm ? `Results for "${searchTerm}"` : "Featured Collections"}
+                </h3>
+                <p className="text-text-muted text-base sm:text-lg">
+                  {filteredProducts.length} {filteredProducts.length === 1 ? "product" : "products"} {searchTerm ? "found" : "available"}
+                </p>
+              </div>
+
+              {filteredProducts.length === 0 ? (
+                <div className="text-center py-16 sm:py-24">
+                  <div className="text-base-700 mb-4">
+                    <svg className="mx-auto h-12 w-12 sm:h-16 sm:w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-bold text-text-primary mb-2">No products found</h3>
+                  <p className="text-text-muted mb-6">Try adjusting your search or browse all categories</p>
+                  <Link href="/products" className="inline-block px-6 py-2 bg-accent-500 text-white font-bold rounded-lg hover:bg-accent-600 transition-colors duration-300">
+                    Browse All Products
+                  </Link>
                 </div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No products found</h3>
-                <p className="text-gray-600">Try adjusting your search terms.</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {filteredProducts.map((product: any) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
-            )}
-          </>
+              ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 lg:gap-6">
+                  {filteredProducts.map((product: any, idx: number) => (
+                    <div
+                      key={product.id}
+                      className="animate-fade-in-up"
+                      style={{ animationDelay: `${Math.min(idx * 50, 400)}ms` }}
+                    >
+                      <ProductCard product={product} />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+        </section>
+
+        {/* Best Sellers Section */}
+        {!searchTerm && bestSellers.length > 0 && (
+          <section className="py-12 sm:py-16 lg:py-24 border-t border-base-800">
+            <div className="mb-8 sm:mb-12 animate-fade-in-up">
+              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-accent-300">
+                ⭐ Customer Favorites
+              </h2>
+              <p className="text-text-muted text-base sm:text-lg">Our most loved and trusted products</p>
+            </div>
+            
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 lg:gap-6">
+              {bestSellers.map((product: any, idx: number) => (
+                <div
+                  key={product.id}
+                  className="animate-fade-in-up relative"
+                  style={{ animationDelay: `${Math.min(idx * 50, 400)}ms` }}
+                >
+                  <div className="absolute -top-3 -right-3 bg-accent-500 text-white px-2 py-1 rounded-full text-xs font-bold z-10">
+                    ★
+                  </div>
+                  <ProductCard product={product} />
+                </div>
+              ))}
+            </div>
+          </section>
         )}
       </main>
 
-      <footer className="bg-black border-t border-gold-500/20 mt-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <h4 className="text-lg font-black bg-clip-text text-transparent bg-gradient-to-r from-gold-400 to-amber-300 mb-4">
+      {/* Premium Footer */}
+      <footer className="bg-gradient-to-b from-base-900 to-black border-t border-accent-500/10 mt-16 sm:mt-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 mb-12">
+            {/* Brand Column */}
+            <div className="space-y-4">
+              <h4 className="text-xl sm:text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-accent-400 to-yellow-300">
                 Groomers Cave
               </h4>
-              <p className="text-slate-400">
-                Premium men's grooming, luxury fragrances, and exclusive lifestyle products for the discerning gentleman.
+              <p className="text-text-muted text-sm leading-relaxed">
+                Premium men's grooming, luxury fragrances, and exclusive lifestyle products curated for the discerning gentleman.
               </p>
             </div>
+            
+            {/* Quick Links */}
             <div>
-              <h4 className="text-lg font-semibold text-gold-300 mb-4">Quick Links</h4>
+              <h4 className="text-base font-bold text-accent-400 mb-4">SHOP</h4>
               <ul className="space-y-2">
-                <li><a href="/" className="text-slate-400 hover:text-gold-300 transition-colors">Home</a></li>
-                <li><a href="/products" className="text-slate-400 hover:text-gold-300 transition-colors">Products</a></li>
-                <li><a href="/cart" className="text-slate-400 hover:text-gold-300 transition-colors">Cart</a></li>
+                <li><Link href="/" className="text-text-muted hover:text-accent-400 transition-colors duration-300 text-sm">Home</Link></li>
+                <li><Link href="/products" className="text-text-muted hover:text-accent-400 transition-colors duration-300 text-sm">Products</Link></li>
+                <li><Link href="/cart" className="text-text-muted hover:text-accent-400 transition-colors duration-300 text-sm">Shopping Cart</Link></li>
+                <li><Link href="/orders" className="text-text-muted hover:text-accent-400 transition-colors duration-300 text-sm">My Orders</Link></li>
               </ul>
             </div>
+            
+            {/* Account Links */}
             <div>
-              <h4 className="text-lg font-semibold text-gold-300 mb-4">Support</h4>
+              <h4 className="text-base font-bold text-accent-400 mb-4">ACCOUNT</h4>
               <ul className="space-y-2">
-                <li><a href="/orders" className="text-slate-400 hover:text-gold-300 transition-colors">My Orders</a></li>
-                <li><a href="/dashboard/customer" className="text-slate-400 hover:text-gold-300 transition-colors">Dashboard</a></li>
-                <li><a href="/wishlist" className="text-slate-400 hover:text-gold-300 transition-colors">Wishlist</a></li>
+                <li><Link href="/auth/signin" className="text-text-muted hover:text-accent-400 transition-colors duration-300 text-sm">Sign In</Link></li>
+                <li><Link href="/dashboard/customer" className="text-text-muted hover:text-accent-400 transition-colors duration-300 text-sm">Dashboard</Link></li>
+                <li><Link href="/wishlist" className="text-text-muted hover:text-accent-400 transition-colors duration-300 text-sm">Wishlist</Link></li>
+                <li><Link href="/dashboard/account" className="text-text-muted hover:text-accent-400 transition-colors duration-300 text-sm">Settings</Link></li>
               </ul>
             </div>
+            
+            {/* Newsletter */}
             <div>
-              <h4 className="text-lg font-semibold text-gold-300 mb-4">Connect</h4>
-              <p className="text-slate-400">
-                Experience premium grooming excellence and exclusive lifestyle products.
-              </p>
+              <h4 className="text-base font-bold text-accent-400 mb-4">UPDATES</h4>
+              <p className="text-text-muted text-sm mb-4">Get exclusive offers and new product launches</p>
+              <div className="flex">
+                <input
+                  type="email"
+                  placeholder="Your email"
+                  className="flex-1 px-3 py-2 text-sm bg-base-900 border border-base-800 text-white focus:outline-none focus:ring-2 focus:ring-accent-500/50"
+                />
+                <button className="px-3 py-2 bg-accent-500 text-white font-bold text-sm hover:bg-accent-600 transition-colors duration-300">
+                  →
+                </button>
+              </div>
             </div>
           </div>
-          <div className="border-t border-base-800 mt-8 pt-8 text-center">
-            <p className="text-slate-500">© 2026 Groomers Cave. All rights reserved. | Premium Men's Grooming & Luxury Lifestyle</p>
+          
+          {/* Divider */}
+          <div className="h-px bg-gradient-to-r from-transparent via-accent-500/20 to-transparent mb-8"></div>
+          
+          {/* Footer Bottom */}
+          <div className="text-center">
+            <p className="text-text-muted text-xs sm:text-sm">
+              © 2026 Groomers Cave. All rights reserved. | Premium Men's Grooming & Luxury Lifestyle Platform
+            </p>
           </div>
         </div>
       </footer>
